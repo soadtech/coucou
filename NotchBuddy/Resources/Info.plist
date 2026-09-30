@@ -26,8 +26,12 @@
 	<string>Pour lire le titre de la fenêtre active et l'attacher comme contexte.</string>
 	<key>NSAppleEventsUsageDescription</key>
 	<string>Pour sauter au terminal et envoyer des mails.</string>
+	<key>NSAudioCaptureUsageDescription</key>
+	<string>Pour écouter l'audio de votre cours en ligne et le transcrire en local sur votre Mac.</string>
 	<key>NSHighResolutionCapable</key>
 	<true/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Pour transcrire ce que vous dites pendant vos cours, en local sur votre Mac.</string>
 	<key>NSSupportsAutomaticGraphicsSwitching</key>
 	<true/>
 </dict>

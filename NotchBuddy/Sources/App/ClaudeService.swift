@@ -227,6 +227,37 @@ final class ClaudeService {
         }
     }
 
+    // MARK: - Generic completion
+    //
+    // Used by Class Mode (quick questions, notes generation). Unlike chat() and
+    // search() this returns the text instead of driving AppState, so callers
+    // own their own presentation.
+
+    func complete(system: String,
+                  messages: [[String: Any]],
+                  maxTokens: Int = 2048) async throws -> String {
+        guard let key = apiKey, !key.isEmpty else {
+            throw NSError(domain: "Claude", code: 401,
+                          userInfo: [NSLocalizedDescriptionKey: "Falta la API key de Anthropic. Ábrela en Settings."])
+        }
+        let body: [String: Any] = [
+            "model": model,
+            "max_tokens": maxTokens,
+            "system": system,
+            "messages": messages,
+        ]
+        let data = try await callAPI(body: body, key: key)
+        guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let content = json["content"] as? [[String: Any]] else {
+            throw NSError(domain: "Claude", code: 0,
+                          userInfo: [NSLocalizedDescriptionKey: "Respuesta inesperada de la API."])
+        }
+        return content
+            .compactMap { $0["type"] as? String == "text" ? $0["text"] as? String : nil }
+            .joined()
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
     // MARK: - API call
 
     private func callAPI(body: [String: Any], key: String, beta: String? = nil) async throws -> Data {

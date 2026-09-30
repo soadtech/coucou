@@ -235,6 +235,10 @@ struct SettingsView: View {
                 }
 
                 // MARK: Son
+                #if !APPSTORE
+                ClassSettingsSection()
+                #endif
+
                 GroupBox("Sound") {
                     VStack(alignment: .leading, spacing: 10) {
                         Toggle("Enable sounds", isOn: $state.soundEnabled)

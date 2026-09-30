@@ -112,6 +112,17 @@ final class AppState: ObservableObject {
     var hotkeyFlags: UInt = NSEvent.ModifierFlags([.command, .shift]).rawValue {
         didSet { UserDefaults.standard.set(Int(hotkeyFlags), forKey: "hotkeyFlags") }
     }
+    // Class Mode: global shortcut to mark the current moment.
+    @Published var classMarkHotkeyEnabled: Bool = true {
+        didSet { UserDefaults.standard.set(classMarkHotkeyEnabled, forKey: "classMarkHotkeyEnabled") }
+    }
+    var classMarkFlags: UInt = NSEvent.ModifierFlags([.command, .shift]).rawValue {
+        didSet { UserDefaults.standard.set(Int(classMarkFlags), forKey: "classMarkFlags") }
+    }
+    var classMarkCode: UInt16 = 37 {  // 'l'
+        didSet { UserDefaults.standard.set(Int(classMarkCode), forKey: "classMarkCode") }
+    }
+
     var hotkeyCode: UInt16 = 45 {  // 'n'
         didSet { UserDefaults.standard.set(Int(hotkeyCode), forKey: "hotkeyCode") }
     }
@@ -196,6 +207,9 @@ final class AppState: ObservableObject {
         if let v = ud.object(forKey: "hotkeyEnabled") as? Bool  { hotkeyEnabled = v }
         if let v = ud.object(forKey: "hotkeyFlags")   as? Int   { hotkeyFlags = UInt(v) }
         if let v = ud.object(forKey: "hotkeyCode")    as? Int   { hotkeyCode = UInt16(v) }
+        if let v = ud.object(forKey: "classMarkHotkeyEnabled") as? Bool { classMarkHotkeyEnabled = v }
+        if let v = ud.object(forKey: "classMarkFlags") as? Int { classMarkFlags = UInt(v) }
+        if let v = ud.object(forKey: "classMarkCode")  as? Int { classMarkCode = UInt16(v) }
         if let d = ud.data(forKey: "vercelProjectFilter"),
            let a = try? JSONDecoder().decode([String].self, from: d) { vercelProjectFilter = Set(a) }
         if let d = ud.data(forKey: "n8nWorkflowFilter"),

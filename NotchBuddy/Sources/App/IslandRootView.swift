@@ -100,11 +100,42 @@ struct IslandContainer: View {
 
             CountdownBar(state: state, islandW: islandWidth)
 
+            #if !APPSTORE
+            // Headphones over Mochi while a class is being captured.
+            // ClassBotOverlay observes the recorder so this container does not.
+            if !uploadActive, !greetingActive {
+                let placement = botPosition(mode: state.mode, view: state.view,
+                                            islandW: islandWidth, islandH: islandHeight,
+                                            uploadProgress: state.uploadProgress)
+                ClassBotOverlay(center: CGPoint(x: placement.0, y: placement.1),
+                                diameter: placement.2,
+                                opacity: placement.3)
+                    .frame(width: islandWidth, height: islandHeight)
+            }
+            #endif
+
             Group {
+                #if !APPSTORE
+                if state.mode == .hidden {
+                    // Smallest size: just the dot, so a class is still
+                    // unmistakable without keeping the island open.
+                    ClassHiddenDot()
+                        .position(x: islandWidth - 16, y: islandHeight / 2)
+                }
+                #endif
                 if state.mode == .compact {
+                    #if !APPSTORE
+                    // During a class this slot shows the recording indicator
+                    // instead of the mini grid — it must stay visible
+                    // throughout. ClassCompactSlot observes the recorder.
+                    ClassCompactSlot(state: state)
+                        .position(x: islandWidth - 42, y: islandHeight / 2)
+                        .transition(.opacity)
+                    #else
                     CompactMiniGrid(state: state)
                         .position(x: islandWidth - 40, y: islandHeight / 2)
                         .transition(.opacity)
+                    #endif
                 }
             }
             .animation(.easeInOut(duration: 0.25), value: state.mode == .compact)
