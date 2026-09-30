@@ -12,6 +12,8 @@ enum IslandView: String, CaseIterable {
     case overview, empty, approval, question, error, finished
     case confused, upload, uploading, choose, mail, prompt
     case searching, result, note, settings, greeting
+    // Class Mode
+    case classStart, classListening, classAsk
 }
 
 // MARK: - Bot State
@@ -107,6 +109,11 @@ enum IslandConst {
         .settings:  ViewLayout(height: 160, botX: 54,  botY: nil, botDiameter: 46, agentMode: .none),
         // Greeting: bot drawn by GreetingCanvasView; no BotPlacement needed
         .greeting:  ViewLayout(height: 150, botX: 320, botY: 90,  botDiameter: 0,  agentMode: .none),
+        // Class Mode. Listening is taller than the 160 law: it carries the live
+        // transcript, which is the whole point of hovering during a class.
+        .classStart:     ViewLayout(height: 176, botX: 58, botY: nil, botDiameter: 50, agentMode: .none),
+        .classListening: ViewLayout(height: 214, botX: 54, botY: 74,  botDiameter: 46, agentMode: .none),
+        .classAsk:       ViewLayout(height: 176, botX: 52, botY: nil, botDiameter: 44, agentMode: .none),
     ]
 
     // Project colors — keyed by lowercase display name or slug
@@ -160,5 +167,8 @@ enum IslandConst {
         .searching: "rgba(99,102,241,0.5)",
         .result:    "rgba(52,211,153,0.22)",
         .prompt:    "rgba(99,102,241,0.22)",
+        .classStart:     "rgba(139,92,246,0.35)",
+        .classListening: "rgba(244,80,94,0.28)",
+        .classAsk:       "rgba(139,92,246,0.30)",
     ]
 }

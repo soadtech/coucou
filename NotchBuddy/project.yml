@@ -24,6 +24,15 @@ settings:
       OTHER_CODE_SIGN_FLAGS: "--timestamp"
       CODE_SIGN_ENTITLEMENTS: Resources/Coucou.entitlements
 
+packages:
+  # The project's single third-party dependency, accepted for Class Mode:
+  # on-device speech recognition. The WhisperKit product pulls in only
+  # ArgmaxCore (source, no binaries). Never added to the App Store target,
+  # which compiles Class Mode out entirely.
+  WhisperKit:
+    url: https://github.com/argmaxinc/WhisperKit
+    from: 1.1.0
+
 targets:
   NotchBuddy:
     type: application
@@ -50,6 +59,11 @@ targets:
         NSSupportsAutomaticGraphicsSwitching: YES
         NSAppleEventsUsageDescription: "Pour sauter au terminal et envoyer des mails."
         NSAccessibilityUsageDescription: "Pour lire le titre de la fenêtre active et l'attacher comme contexte."
+        NSMicrophoneUsageDescription: "Pour transcrire ce que vous dites pendant vos cours, en local sur votre Mac."
+        NSAudioCaptureUsageDescription: "Pour écouter l'audio de votre cours en ligne et le transcrire en local sur votre Mac."
+    dependencies:
+      - package: WhisperKit
+        product: WhisperKit
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: fr.louisraille.NotchBuddy

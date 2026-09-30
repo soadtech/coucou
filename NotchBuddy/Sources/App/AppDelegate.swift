@@ -5,6 +5,9 @@ import SwiftUI
 final class AppDelegate: NSObject, NSApplicationDelegate {
     var statusItem: NSStatusItem?
     private(set) var islandController: IslandWindowController?
+    #if !APPSTORE
+    private var classMenu: ClassMenu?
+    #endif
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Ignore SIGPIPE — prevents crash when nb-hook closes socket before we write response
@@ -29,6 +32,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let menu = NSMenu()
         menu.addItem(withTitle: "Open Coucou", action: #selector(openIsland), keyEquivalent: "")
         menu.addItem(.separator())
+        #if !APPSTORE
+        let classMenu = ClassMenu()
+        self.classMenu = classMenu
+        menu.addItem(classMenu.menuItem)
+        menu.addItem(.separator())
+        #endif
         menu.addItem(withTitle: "Settings…", action: #selector(openSettings), keyEquivalent: ",")
         menu.addItem(.separator())
         menu.addItem(withTitle: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")

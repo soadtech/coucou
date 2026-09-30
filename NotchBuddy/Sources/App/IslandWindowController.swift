@@ -367,6 +367,20 @@ final class IslandWindowController: NSWindowController {
             self.fsm.reveal()
         }
 
+        #if !APPSTORE
+        // Class Mode navigation
+        NotificationCenter.default.addObserver(forName: .islandShowClassStart, object: nil, queue: .main) { [weak self] _ in
+            self?.expand(to: .classStart)
+        }
+        NotificationCenter.default.addObserver(forName: .islandShowClass, object: nil, queue: .main) { [weak self] _ in
+            self?.expand(to: .classListening)
+        }
+        NotificationCenter.default.addObserver(forName: .islandShowClassAsk, object: nil, queue: .main) { [weak self] _ in
+            ClassQuickAsk.shared.reset()
+            self?.expand(to: .classAsk)
+        }
+        #endif
+
         // Collapse requests from views (OK button, etc.)
         NotificationCenter.default.addObserver(forName: .islandCollapse, object: nil, queue: .main) { [weak self] _ in
             self?.collapse()
@@ -461,6 +475,24 @@ final class IslandWindowController: NSWindowController {
                 }
             }
         }
+
+        #if !APPSTORE
+        // Global shortcut to mark the current moment of a class. Works from
+        // any app — the whole point is not having to leave the meeting.
+        NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { [weak self] event in
+            Task { @MainActor in
+                guard let self,
+                      self.state.classMarkHotkeyEnabled,
+                      ClassRecorder.shared.isRecording else { return }
+                let pressed = event.modifierFlags.intersection([.command, .control, .option, .shift]).rawValue
+                guard pressed == self.state.classMarkFlags,
+                      event.keyCode == self.state.classMarkCode else { return }
+                ClassRecorder.shared.mark(.notUnderstood)
+                // Show what was marked, briefly.
+                if self.state.mode != .expanded { self.expand(to: .classListening) }
+            }
+        }
+        #endif
 
         // Track last external app for window context capture
         let ourBundle = Bundle.main.bundleIdentifier ?? ""
@@ -841,6 +873,10 @@ extension Notification.Name {
     static let greetComplete    = Notification.Name("notchBuddy.greetComplete")
     static let greetingHover    = Notification.Name("notchBuddy.greetingHover")
     static let greetingInterrupt = Notification.Name("notchBuddy.greetingInterrupt")
+    // Class Mode
+    static let islandShowClassStart = Notification.Name("notchBuddy.islandShowClassStart")
+    static let islandShowClass      = Notification.Name("notchBuddy.islandShowClass")
+    static let islandShowClassAsk   = Notification.Name("notchBuddy.islandShowClassAsk")
 }
 
 // MARK: - islandSize (takes real notch dimensions)
