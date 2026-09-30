@@ -31,7 +31,11 @@ actor WhisperKitEngine: TranscriptionEngine {
             pipe = try await WhisperKit(config)
             NSLog("[ClassWhisper] model ready at %@", folder.lastPathComponent)
         } catch {
+            // Surface it where the user actually looks. Until now a failed load
+            // left Settings claiming the model was ready while nothing was ever
+            // transcribed.
             NSLog("[ClassWhisper] load failed: %@", error.localizedDescription)
+            await WhisperModelManager.shared.reportLoadFailure(error.localizedDescription)
             throw TranscriptionError.modelUnavailable(error.localizedDescription)
         }
     }

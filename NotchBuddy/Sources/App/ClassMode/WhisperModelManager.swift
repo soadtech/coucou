@@ -80,12 +80,39 @@ final class WhisperModelManager: ObservableObject {
         return entries.first { $0.lastPathComponent.hasSuffix(model) }
     }
 
+    /// Every compiled model WhisperKit needs. Checking for "some .mlmodelc" is
+    /// not enough: an interrupted download leaves a directory with a couple of
+    /// them, which then reports as ready and fails at load time instead.
+    private static let requiredModels = [
+        "AudioEncoder.mlmodelc",
+        "TextDecoder.mlmodelc",
+        "MelSpectrogram.mlmodelc",
+    ]
+
     func isDownloaded(_ model: String) -> Bool {
-        guard let url = folder(for: model),
-              let contents = try? FileManager.default.contentsOfDirectory(atPath: url.path)
-        else { return false }
-        // A partial download leaves the directory there but without the models.
-        return contents.contains { $0.hasSuffix(".mlmodelc") }
+        guard let url = folder(for: model) else { return false }
+        let fm = FileManager.default
+        for required in Self.requiredModels {
+            let path = url.appendingPathComponent(required)
+            // A .mlmodelc is a directory; an empty one means a broken download.
+            guard let contents = try? fm.contentsOfDirectory(atPath: path.path),
+                  !contents.isEmpty else { return false }
+        }
+        return true
+    }
+
+    /// Deletes a model so the next attempt starts clean. Used when a download
+    /// turns out to be incomplete or unusable.
+    func repairModel() {
+        deleteModel(selectedModel)
+        cachedFolder = nil
+        state = .notDownloaded
+    }
+
+    /// Called by the engine when loading fails despite the files being present.
+    func reportLoadFailure(_ message: String) {
+        cachedFolder = nil
+        state = .failed(message)
     }
 
     // MARK: Download

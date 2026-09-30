@@ -32,6 +32,16 @@ struct ClassSettingsSection: View {
 
                 statusRow
 
+                // The transcriber's own failures used to be visible only in the
+                // island, where they scroll past. A class that recorded but
+                // never transcribed has to say why here too.
+                if let error = ClassRecorder.shared.transcriber.lastError {
+                    Text("Última transcripción: \(error)")
+                        .font(.caption)
+                        .foregroundStyle(.orange)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+
                 Toggle("Also record my microphone", isOn: $recorder.captureMicrophone)
                 Text("Keeps “Clase” and “Yo” apart in the transcript. With Bluetooth headphones this switches them to call mode and lowers the audio quality.")
                     .font(.caption)
@@ -98,8 +108,8 @@ struct ClassSettingsSection: View {
             HStack(spacing: 6) {
                 Text("Model ready").font(.caption).foregroundStyle(.secondary)
                 Spacer()
-                Button("Delete") { models.deleteModel(models.selectedModel) }
-                    .font(.caption)
+                Button("Re-download") { models.repairModel() }.font(.caption)
+                Button("Delete") { models.deleteModel(models.selectedModel) }.font(.caption)
             }
         case .notDownloaded:
             HStack(spacing: 8) {
@@ -115,10 +125,13 @@ struct ClassSettingsSection: View {
                     .font(.caption).foregroundStyle(.secondary)
             }
         case .failed(let message):
-            Text(message)
-                .font(.caption)
-                .foregroundStyle(.red)
-                .fixedSize(horizontal: false, vertical: true)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(message)
+                    .font(.caption)
+                    .foregroundStyle(.red)
+                    .fixedSize(horizontal: false, vertical: true)
+                Button("Delete and download again") { models.repairModel() }.font(.caption)
+            }
         }
     }
 }
