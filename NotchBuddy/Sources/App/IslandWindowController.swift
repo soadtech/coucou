@@ -703,7 +703,14 @@ final class IslandWindowController: NSWindowController {
     // MARK: - Helpers
 
     func defaultView() -> IslandView {
-        state.tasks.isEmpty ? .empty : .overview
+        #if !APPSTORE
+        // Class-only mode: opening the notch lands on classes, and a class in
+        // progress always wins — that is what you are there to see.
+        if state.classOnlyMode {
+            return ClassRecorder.shared.isRecording ? .classListening : .classHome
+        }
+        #endif
+        return state.tasks.isEmpty ? .empty : .overview
     }
 
     func baseMode() -> IslandMode {

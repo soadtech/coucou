@@ -488,17 +488,21 @@ struct IslandHeader: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            // Left: tab capsules
+            // Left: tab capsules. Class-only mode keeps just the home tab —
+            // the general chat and the file drop belong to the other app.
             HStack(spacing: 5) {
-                TabButton(icon: "house.fill", view: .overview, state: state)
-                TabButton(icon: "bubble.left.fill", view: .prompt, state: state, preAction: {
-                    #if !APPSTORE
-                    if state.promptContext == nil {
-                        state.promptContext = WindowContextCapture.captureActive(from: state.lastExternalApp)
-                    }
-                    #endif
-                })
-                TabButton(icon: "plus", view: .upload, state: state)
+                #if !APPSTORE
+                if state.classOnlyMode {
+                    TabButton(icon: "headphones", view: .classHome, state: state)
+                    TabButton(icon: "list.bullet", view: .classHome, state: state, preAction: {
+                        ClassWindowController.shared.show()
+                    })
+                } else {
+                    classicTabs
+                }
+                #else
+                classicTabs
+                #endif
             }
             .padding(.leading, 14)
 
@@ -527,6 +531,21 @@ struct IslandHeader: View {
             .padding(.trailing, 16)
         }
         .frame(maxHeight: .infinity)
+    }
+}
+
+extension IslandHeader {
+    @ViewBuilder
+    var classicTabs: some View {
+        TabButton(icon: "house.fill", view: .overview, state: state)
+        TabButton(icon: "bubble.left.fill", view: .prompt, state: state, preAction: {
+            #if !APPSTORE
+            if state.promptContext == nil {
+                state.promptContext = WindowContextCapture.captureActive(from: state.lastExternalApp)
+            }
+            #endif
+        })
+        TabButton(icon: "plus", view: .upload, state: state)
     }
 }
 

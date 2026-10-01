@@ -112,6 +112,17 @@ final class AppState: ObservableObject {
     var hotkeyFlags: UInt = NSEvent.ModifierFlags([.command, .shift]).rawValue {
         didSet { UserDefaults.standard.set(Int(hotkeyFlags), forKey: "hotkeyFlags") }
     }
+    /// Class-only mode: Coucou becomes a class and meeting recorder and
+    /// nothing else. Claude Code hooks, the integration pills, the general
+    /// chat and the file drop all stay in the code but are never loaded, so
+    /// this is a switch rather than a fork.
+    @Published var classOnlyMode: Bool = true {
+        didSet {
+            UserDefaults.standard.set(classOnlyMode, forKey: "classOnlyMode")
+            loadIntegrationTasks()
+        }
+    }
+
     // Class Mode: global shortcut to mark the current moment.
     @Published var classMarkHotkeyEnabled: Bool = true {
         didSet { UserDefaults.standard.set(classMarkHotkeyEnabled, forKey: "classMarkHotkeyEnabled") }
@@ -207,6 +218,7 @@ final class AppState: ObservableObject {
         if let v = ud.object(forKey: "hotkeyEnabled") as? Bool  { hotkeyEnabled = v }
         if let v = ud.object(forKey: "hotkeyFlags")   as? Int   { hotkeyFlags = UInt(v) }
         if let v = ud.object(forKey: "hotkeyCode")    as? Int   { hotkeyCode = UInt16(v) }
+        if let v = ud.object(forKey: "classOnlyMode") as? Bool { classOnlyMode = v }
         if let v = ud.object(forKey: "classMarkHotkeyEnabled") as? Bool { classMarkHotkeyEnabled = v }
         if let v = ud.object(forKey: "classMarkFlags") as? Int { classMarkFlags = UInt(v) }
         if let v = ud.object(forKey: "classMarkCode")  as? Int { classMarkCode = UInt16(v) }
@@ -273,12 +285,26 @@ final class AppState: ObservableObject {
 
     func syncView() {
         guard mode == .expanded else { return }
+        #if !APPSTORE
+        // Class-only mode has no task pills, so the empty/overview dance would
+        // only drag the island away from the class views.
+        if classOnlyMode { return }
+        #endif
         if view == .empty && !tasks.isEmpty { view = .overview }
         else if view == .overview && tasks.isEmpty { view = .empty }
     }
 
     /// Load integration pills respecting activeIntegrations. VS Code always loads. Safe to call multiple times.
     func loadIntegrationTasks() {
+        #if !APPSTORE
+        // In class-only mode there are no pills at all: the island is for
+        // classes, not for watching agents.
+        if classOnlyMode {
+            tasks.removeAll { $0.isIntegration }
+            focusId = tasks.first?.id
+            return
+        }
+        #endif
         for task in AgentTask.integrationAgents {
             let shouldLoad = task.id == "integration_claude" || activeIntegrations.contains(task.id)
             let loaded = tasks.contains(where: { $0.id == task.id })

@@ -1,6 +1,79 @@
 #if !APPSTORE
 import SwiftUI
 
+// MARK: - ClassHomeView
+// What the notch shows when it is opened and no class is running. In
+// class-only mode this is the island's home: starting a class and getting back
+// to a recent one, nothing else.
+
+struct ClassHomeView: View {
+    @ObservedObject private var recorder = ClassRecorder.shared
+    @ObservedObject private var models = WhisperModelManager.shared
+    @State private var recent: [ClassMeta] = []
+
+    var body: some View {
+        ZStack {
+            CardBackground(wash: .indigo)
+            VStack(alignment: .leading, spacing: 9) {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    Text("Clases y reuniones")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(Color(hex: "#F5F6F8"))
+                    Spacer()
+                    if !models.isDownloaded(models.selectedModel) {
+                        Text("sin modelo de transcripción")
+                            .font(.system(size: 10.5))
+                            .foregroundColor(Color(hex: "#F5A524"))
+                    }
+                }
+
+                HStack(spacing: 8) {
+                    PrimaryButton("Empezar una clase") {
+                        NotificationCenter.default.post(name: .islandShowClassStart, object: nil)
+                    }
+                    SecondaryButton("Mis clases") {
+                        ClassWindowController.shared.show()
+                        NotificationCenter.default.post(name: .islandCollapse, object: nil)
+                    }
+                }
+
+                if recent.isEmpty {
+                    Text("Todavía no has grabado ninguna. Mochi escucha la reunión, la transcribe en este Mac y te deja los apuntes.")
+                        .font(.system(size: 11))
+                        .foregroundColor(Color(hex: "#6E737C"))
+                        .fixedSize(horizontal: false, vertical: true)
+                } else {
+                    VStack(alignment: .leading, spacing: 3) {
+                        ForEach(recent) { meta in
+                            Button {
+                                ClassWindowController.shared.show()
+                                NotificationCenter.default.post(name: .islandCollapse, object: nil)
+                            } label: {
+                                HStack(spacing: 7) {
+                                    Text(meta.title)
+                                        .font(.system(size: 11.5))
+                                        .foregroundColor(Color(hex: "#D7D9DE"))
+                                        .lineLimit(1)
+                                    Text("\(meta.language.label) · \(ClassRecorder.timecode(meta.duration))")
+                                        .font(.system(size: 10.5))
+                                        .foregroundColor(Color(hex: "#6E737C"))
+                                    Spacer()
+                                }
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                }
+            }
+            .padding(.leading, 112)
+            .padding(.trailing, 16)
+            .padding(.vertical, 10)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .onAppear { recent = Array(ClassStore.shared.allClasses().prefix(3)) }
+    }
+}
+
 // MARK: - ClassStartView
 // Choosing what to listen to, the language and an optional title.
 

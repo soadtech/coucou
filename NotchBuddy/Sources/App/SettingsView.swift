@@ -64,6 +64,145 @@ struct SettingsView: View {
                 }
 
                 // MARK: Hooks
+                #if !APPSTORE
+                if !state.classOnlyMode {
+                claudeCodeSections
+                }
+                #else
+                claudeCodeSections
+                #endif
+
+                #if !APPSTORE
+                ClassSettingsSection()
+                #endif
+
+                GroupBox("Sound") {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Toggle("Enable sounds", isOn: $state.soundEnabled)
+                        HStack(spacing: 8) {
+                            Text("Volume")
+                                .frame(width: 56, alignment: .leading)
+                            Slider(value: $state.soundVolume, in: 0...0.2)
+                                .disabled(!state.soundEnabled)
+                            Text("\(Int(state.soundVolume / 0.2 * 100)) %")
+                                .frame(width: 36, alignment: .trailing)
+                                .monospacedDigit()
+                        }
+                    }
+                    .padding(6)
+                }
+
+                // MARK: Timings
+                GroupBox("Behavior") {
+                    VStack(alignment: .leading, spacing: 10) {
+                        HStack(spacing: 8) {
+                            Text("Close after")
+                            TextField("60", value: $state.autoCloseInterval, format: .number)
+                                .textFieldStyle(.roundedBorder)
+                                .frame(width: 64)
+                            Text("s inactive")
+                        }
+                        HStack(spacing: 8) {
+                            Text("Hide after")
+                            TextField("3", value: absenceMinutes, format: .number)
+                                .textFieldStyle(.roundedBorder)
+                                .frame(width: 48)
+                            Text("min without movement")
+                        }
+                    }
+                    .padding(6)
+                }
+
+                // MARK: Active pills
+                GroupBox("Active pills") {
+                    VStack(alignment: .leading, spacing: 10) {
+                        HStack {
+                            Text("VS Code")
+                                .font(.system(size: 12, weight: .semibold))
+                            Circle().fill(Color(hex: "#F5F6F8")).frame(width: 8, height: 8)
+                            Spacer()
+                            Text("Always active")
+                                .font(.system(size: 11))
+                                .foregroundColor(.secondary)
+                        }
+
+                        Divider()
+
+                        Text("\(state.activeIntegrations.count)/4 slots used")
+                            .font(.system(size: 11))
+                            .foregroundColor(state.activeIntegrations.count >= 4 ? .orange : .secondary)
+
+                        ForEach(AgentTask.toggleableIntegrationIds, id: \.self) { id in
+                            let task = AgentTask.integrationAgents.first { $0.id == id }!
+                            let isOn = state.activeIntegrations.contains(id)
+                            let atMax = state.activeIntegrations.count >= 4 && !isOn
+                            HStack(spacing: 8) {
+                                Circle()
+                                    .fill(Color(hex: task.color))
+                                    .frame(width: 10, height: 10)
+                                Text(task.name)
+                                    .font(.system(size: 12))
+                                    .foregroundColor(atMax ? .secondary : .primary)
+                                Spacer()
+                                Toggle("", isOn: Binding(
+                                    get: { isOn },
+                                    set: { _ in state.toggleIntegration(id) }
+                                ))
+                                .labelsHidden()
+                                .disabled(atMax)
+                            }
+                        }
+                    }
+                    .padding(6)
+                }
+
+                // MARK: Hotkey
+                GroupBox("Hotkey") {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Toggle("Show island with shortcut", isOn: $state.hotkeyEnabled)
+                        if state.hotkeyEnabled {
+                            HStack(spacing: 8) {
+                                Text("Shortcut")
+                                    .frame(width: 70, alignment: .leading)
+                                ShortcutRecorderButton(flags: $hotkeyFlags, code: $hotkeyCode)
+                                    .onChange(of: hotkeyFlags) { _, v in state.hotkeyFlags = v }
+                                    .onChange(of: hotkeyCode)  { _, v in state.hotkeyCode  = v }
+                                Text("presses this → island opens")
+                                    .font(.system(size: 11))
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+                    .padding(6)
+                }
+
+                // MARK: Startup
+                GroupBox("Startup") {
+                    Toggle("Launch at Mac startup", isOn: $launchAtStartup)
+                        .onChange(of: launchAtStartup) { _, on in toggleStartup(on) }
+                        .padding(6)
+                }
+
+                if !statusMessage.isEmpty {
+                    Text(statusMessage)
+                        .font(.system(size: 12))
+                        .foregroundColor(statusMessage.hasPrefix("❌") ? .red : .secondary)
+                        .padding(.horizontal, 2)
+                }
+
+                Spacer(minLength: 0)
+            }
+            .padding(20)
+        }
+        .frame(width: 480, height: 720)
+    }
+
+    // MARK: - Actions
+
+    /// Everything that belongs to the Claude Code companion rather than to
+    /// class recording. Hidden — not removed — in class-only mode.
+    @ViewBuilder
+    private var claudeCodeSections: some View {
                 GroupBox("Claude Code Hooks") {
                     VStack(alignment: .leading, spacing: 10) {
                         if hookNeedsUpdate {
@@ -235,132 +374,7 @@ struct SettingsView: View {
                 }
 
                 // MARK: Son
-                #if !APPSTORE
-                ClassSettingsSection()
-                #endif
-
-                GroupBox("Sound") {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Toggle("Enable sounds", isOn: $state.soundEnabled)
-                        HStack(spacing: 8) {
-                            Text("Volume")
-                                .frame(width: 56, alignment: .leading)
-                            Slider(value: $state.soundVolume, in: 0...0.2)
-                                .disabled(!state.soundEnabled)
-                            Text("\(Int(state.soundVolume / 0.2 * 100)) %")
-                                .frame(width: 36, alignment: .trailing)
-                                .monospacedDigit()
-                        }
-                    }
-                    .padding(6)
-                }
-
-                // MARK: Timings
-                GroupBox("Behavior") {
-                    VStack(alignment: .leading, spacing: 10) {
-                        HStack(spacing: 8) {
-                            Text("Close after")
-                            TextField("60", value: $state.autoCloseInterval, format: .number)
-                                .textFieldStyle(.roundedBorder)
-                                .frame(width: 64)
-                            Text("s inactive")
-                        }
-                        HStack(spacing: 8) {
-                            Text("Hide after")
-                            TextField("3", value: absenceMinutes, format: .number)
-                                .textFieldStyle(.roundedBorder)
-                                .frame(width: 48)
-                            Text("min without movement")
-                        }
-                    }
-                    .padding(6)
-                }
-
-                // MARK: Active pills
-                GroupBox("Active pills") {
-                    VStack(alignment: .leading, spacing: 10) {
-                        HStack {
-                            Text("VS Code")
-                                .font(.system(size: 12, weight: .semibold))
-                            Circle().fill(Color(hex: "#F5F6F8")).frame(width: 8, height: 8)
-                            Spacer()
-                            Text("Always active")
-                                .font(.system(size: 11))
-                                .foregroundColor(.secondary)
-                        }
-
-                        Divider()
-
-                        Text("\(state.activeIntegrations.count)/4 slots used")
-                            .font(.system(size: 11))
-                            .foregroundColor(state.activeIntegrations.count >= 4 ? .orange : .secondary)
-
-                        ForEach(AgentTask.toggleableIntegrationIds, id: \.self) { id in
-                            let task = AgentTask.integrationAgents.first { $0.id == id }!
-                            let isOn = state.activeIntegrations.contains(id)
-                            let atMax = state.activeIntegrations.count >= 4 && !isOn
-                            HStack(spacing: 8) {
-                                Circle()
-                                    .fill(Color(hex: task.color))
-                                    .frame(width: 10, height: 10)
-                                Text(task.name)
-                                    .font(.system(size: 12))
-                                    .foregroundColor(atMax ? .secondary : .primary)
-                                Spacer()
-                                Toggle("", isOn: Binding(
-                                    get: { isOn },
-                                    set: { _ in state.toggleIntegration(id) }
-                                ))
-                                .labelsHidden()
-                                .disabled(atMax)
-                            }
-                        }
-                    }
-                    .padding(6)
-                }
-
-                // MARK: Hotkey
-                GroupBox("Hotkey") {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Toggle("Show island with shortcut", isOn: $state.hotkeyEnabled)
-                        if state.hotkeyEnabled {
-                            HStack(spacing: 8) {
-                                Text("Shortcut")
-                                    .frame(width: 70, alignment: .leading)
-                                ShortcutRecorderButton(flags: $hotkeyFlags, code: $hotkeyCode)
-                                    .onChange(of: hotkeyFlags) { _, v in state.hotkeyFlags = v }
-                                    .onChange(of: hotkeyCode)  { _, v in state.hotkeyCode  = v }
-                                Text("presses this → island opens")
-                                    .font(.system(size: 11))
-                                    .foregroundColor(.secondary)
-                            }
-                        }
-                    }
-                    .padding(6)
-                }
-
-                // MARK: Startup
-                GroupBox("Startup") {
-                    Toggle("Launch at Mac startup", isOn: $launchAtStartup)
-                        .onChange(of: launchAtStartup) { _, on in toggleStartup(on) }
-                        .padding(6)
-                }
-
-                if !statusMessage.isEmpty {
-                    Text(statusMessage)
-                        .font(.system(size: 12))
-                        .foregroundColor(statusMessage.hasPrefix("❌") ? .red : .secondary)
-                        .padding(.horizontal, 2)
-                }
-
-                Spacer(minLength: 0)
-            }
-            .padding(20)
-        }
-        .frame(width: 480, height: 720)
     }
-
-    // MARK: - Actions
 
     private func toggleStartup(_ on: Bool) {
         do {

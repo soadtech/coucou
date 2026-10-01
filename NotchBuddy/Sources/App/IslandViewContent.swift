@@ -26,11 +26,12 @@ struct IslandViewContent: View {
         case .settings:  SettingsIslandView(state: state)
         case .greeting:  EmptyView()  // GreetingCanvasView overlaid in IslandRootView
         #if !APPSTORE
+        case .classHome:      ClassHomeView()
         case .classStart:     ClassStartView()
         case .classListening: ClassListeningView()
         case .classAsk:       ClassAskView()
         #else
-        case .classStart, .classListening, .classAsk: EmptyView()
+        case .classHome, .classStart, .classListening, .classAsk: EmptyView()
         #endif
         }
     }

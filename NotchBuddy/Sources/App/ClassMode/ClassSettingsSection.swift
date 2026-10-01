@@ -16,8 +16,16 @@ struct ClassSettingsSection: View {
     @State private var accessibilityTrusted = AXIsProcessTrusted()
 
     var body: some View {
-        GroupBox("Class Mode") {
+        GroupBox("Modo Clase") {
             VStack(alignment: .leading, spacing: 10) {
+
+                Toggle("Usar Coucou solo para clases y reuniones", isOn: $state.classOnlyMode)
+                Text("Oculta Claude Code, las integraciones, el chat general y el arrastre de archivos. No se borra nada: puedes volver a activarlo cuando quieras. Requiere reiniciar la app.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Divider().opacity(0.25)
 
                 Picker("Whisper model", selection: $models.selectedModel) {
                     ForEach(modelChoices, id: \.self) { model in

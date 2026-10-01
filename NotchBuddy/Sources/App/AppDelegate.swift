@@ -72,14 +72,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         islandController = IslandWindowController()
         islandController?.showWindow(nil)
         islandController?.fsm.launch()
-        HookServer.shared.start()
-        N8nPoller.shared.start()
-        VercelPoller.shared.start()
-        ResendPoller.shared.start()
-        GithubPoller.shared.start()
-        StripePoller.shared.start()
-        CalcomPoller.shared.start()
-        NotionPoller.shared.start()
+        // In class-only mode none of this runs: no hook server, no pollers,
+        // no network chatter. The app is a class recorder and nothing else.
+        if !AppState.shared.classOnlyMode {
+            HookServer.shared.start()
+            N8nPoller.shared.start()
+            VercelPoller.shared.start()
+            ResendPoller.shared.start()
+            GithubPoller.shared.start()
+            StripePoller.shared.start()
+            CalcomPoller.shared.start()
+            NotionPoller.shared.start()
+        }
         NotificationCenter.default.addObserver(self, selector: #selector(openSettings),
                                                name: .openFullSettings, object: nil)
     }
