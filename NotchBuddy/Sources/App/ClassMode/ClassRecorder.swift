@@ -116,7 +116,8 @@ final class ClassRecorder: ObservableObject {
                              language: language,
                              startedAt: .now,
                              sourceAppBundleID: source?.bundleID,
-                             sourceAppName: source?.name)
+                             sourceAppName: source?.name,
+                             whisperModel: WhisperModelManager.shared.selectedModel)
         if meta.title.isEmpty {
             meta.title = "Clase de \(language.label) — \(Self.dateFormatter.string(from: meta.startedAt))"
         }

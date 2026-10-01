@@ -74,6 +74,35 @@ actor WhisperKitEngine: TranscriptionEngine {
         }
     }
 
+    // MARK: - Whole-file transcription
+
+    func transcribeFile(at url: URL) async throws -> [TranscriptSegment] {
+        guard let pipe else { throw TranscriptionError.notPrepared }
+
+        let options = DecodingOptions(
+            task: .transcribe,
+            language: nil,
+            detectLanguage: true,
+            skipSpecialTokens: true,
+            withoutTimestamps: false,
+            chunkingStrategy: .vad)
+
+        let results = try await pipe.transcribe(audioPath: url.path, decodeOptions: options)
+        return results.flatMap { result -> [TranscriptSegment] in
+            let language = result.language
+            return result.segments.compactMap { segment in
+                let text = segment.text.trimmingCharacters(in: .whitespacesAndNewlines)
+                guard !text.isEmpty, !(text.hasPrefix("[") && text.hasSuffix("]")) else { return nil }
+                guard !Self.isHallucination(segment, text: text) else { return nil }
+                return TranscriptSegment(start: TimeInterval(segment.start),
+                                         end: TimeInterval(segment.end),
+                                         speaker: .desconocido,
+                                         text: text,
+                                         language: language)
+            }
+        }
+    }
+
     // MARK: - Hallucination filter
     //
     // Given silence, Whisper does not return nothing — it returns whichever

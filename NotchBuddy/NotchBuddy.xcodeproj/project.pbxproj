@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		007EF6E3FC1C1934F4E6CAFA /* ClassMochiIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1FA5C515A49FCFE1DB40D5 /* ClassMochiIndicator.swift */; };
+		016C98A94848817055B03948 /* ClassHistoryParts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A584D09F71F05248FA8C05 /* ClassHistoryParts.swift */; };
+		02D8FA84F861D19F1B4DC85C /* ClassExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3AB5AA5B658DBA2305C06C /* ClassExporter.swift */; };
 		0329E76BA4A8FEEA8A6D76E7 /* ClaudeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83D5410BD030B243ADDCFF4 /* ClaudeService.swift */; };
 		065FCE817315454DE3F85F25 /* IslandViewContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA02B08886939FF6FE0475DD /* IslandViewContent.swift */; };
 		06BF5FD95E03010CAFDBF2D0 /* NotchBuddyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BD8F3CAA60CF37640759E1 /* NotchBuddyApp.swift */; };
@@ -35,6 +37,7 @@
 		2DEB459FBD0BA3CEAAA5FDE9 /* ClaudeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83D5410BD030B243ADDCFF4 /* ClaudeService.swift */; };
 		2F36E3C6C073E968A682AFA4 /* NotionPoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE03E03D1804B0B92C5C2DAD /* NotionPoller.swift */; };
 		324C3168AA9D78ABB7090AD7 /* ClassAudioWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F69636999C21F9A5611FD7 /* ClassAudioWriter.swift */; };
+		33DC257762B1D45D0879FD2B /* ClassRetranscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A19BBD4D5FD09AD97035E7E /* ClassRetranscriber.swift */; };
 		34A4AB94366007200426EC95 /* ClassAudioPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF23423E8E62AA83A42F6BF0 /* ClassAudioPipeline.swift */; };
 		36AB09C0AD9F6248EB1844FC /* ClassAudioWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F69636999C21F9A5611FD7 /* ClassAudioWriter.swift */; };
 		3756B7E1A55D9CEC8C4D34A4 /* IslandStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212018F09EA1E96FBD63CD /* IslandStateMachine.swift */; };
@@ -53,14 +56,17 @@
 		68A950E3C23FD612639D9776 /* IslandViewContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA02B08886939FF6FE0475DD /* IslandViewContent.swift */; };
 		6AC9E73A54519D42BBBAC762 /* ClassNotesGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995BB49B3CA698F9030FA4CE /* ClassNotesGenerator.swift */; };
 		7191F1ABF77208C3042B91CA /* AudioPermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9873BBDCA319C8EC3FA2AFE5 /* AudioPermissions.swift */; };
+		724ED8DC387F46370BC23BA7 /* ClassRetranscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A19BBD4D5FD09AD97035E7E /* ClassRetranscriber.swift */; };
 		78B3C6814431B2DD9D1F4949 /* SoundEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE21C2B315D37AA70ED45E9 /* SoundEngine.swift */; };
 		78FCEDC8F78B683AB10E6529 /* NotionPoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE03E03D1804B0B92C5C2DAD /* NotionPoller.swift */; };
 		7E16E0A811E8E3B599B9BA51 /* WhisperKitEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE096CE7F48BFFFA7B092B0D /* WhisperKitEngine.swift */; };
 		821151F706BAE7FFD69C9FF1 /* ClassStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33FDB3383D90CD157408C55E /* ClassStore.swift */; };
+		857E748C550039C605AFAB53 /* ClassWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79BBCB1D7436B27657DD10BD /* ClassWindowController.swift */; };
 		8618B5AF8700E24DDD3E7B42 /* ClassQuickAsk.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA9065F2A32331DD418DD56 /* ClassQuickAsk.swift */; };
 		877D0C4B99C3D4E2856BC8DB /* ClassIslandViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601D47E6F177B8E4AA2F38A7 /* ClassIslandViews.swift */; };
 		878924960FC0F2B3524D48AC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192844E7299DEED5C2372067 /* AppDelegate.swift */; };
 		8971B582DBFB7D6A1020BFAE /* ClassSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F46CD839DFF74D7F9A4BCA /* ClassSettingsSection.swift */; };
+		8A1BAA0BCE32986937A82E13 /* ClassHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB9F278E629FEEADBDB66C3 /* ClassHistoryView.swift */; };
 		8C32A0C3EAF536D3836F61D5 /* GreetingCanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C581F7B1A9F14B281B60063E /* GreetingCanvasView.swift */; };
 		8D1C01F283FA7806119A1C85 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1A7D5CBE2AC084A10C5FF3 /* SettingsView.swift */; };
 		8E324F2D654D7A21A82B1C10 /* ClassRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F67452919C5EBC8D416E94D /* ClassRecorder.swift */; };
@@ -77,10 +83,12 @@
 		C0E18D0F6F5F6D131E6066B8 /* GreetingCanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C581F7B1A9F14B281B60063E /* GreetingCanvasView.swift */; };
 		C18227D148D99FE6EE3CC51A /* GithubPoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB8B6E5E9DA6164F979E88F /* GithubPoller.swift */; };
 		C24D863967D8D32D828ED4B1 /* BotEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4540F630F8BA04AFFFA3979 /* BotEngine.swift */; };
+		C4B45EDA999E8019F5BF9193 /* ClassHistoryParts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A584D09F71F05248FA8C05 /* ClassHistoryParts.swift */; };
 		C61DDE2EC5FDDB39E4AA3B34 /* IslandWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D710BD7834228045869D0184 /* IslandWindowController.swift */; };
 		C808B654C84D9F71DBF8493A /* GithubPoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB8B6E5E9DA6164F979E88F /* GithubPoller.swift */; };
 		C940B651C6CA952D99388E04 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192844E7299DEED5C2372067 /* AppDelegate.swift */; };
 		CA3321C14A11FED94E48B3E3 /* IslandRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A1A8206F73376F4CAF2057 /* IslandRootView.swift */; };
+		CAB5CBD785F08F47F7E317AA /* ClassWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79BBCB1D7436B27657DD10BD /* ClassWindowController.swift */; };
 		CC7C40A8180C48A6239DD237 /* WhisperKitEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE096CE7F48BFFFA7B092B0D /* WhisperKitEngine.swift */; };
 		CD8DECA66B9E09C97E469DB9 /* BotCanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29F4C0B02BE91654D02AA0C /* BotCanvasView.swift */; };
 		CDD9E0035B465AB08A74DBA3 /* ClassSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F46CD839DFF74D7F9A4BCA /* ClassSettingsSection.swift */; };
@@ -95,6 +103,8 @@
 		EB23ED9F1C12EA8B54A76A91 /* ResendPoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B5FDDE03F5F711146937E2 /* ResendPoller.swift */; };
 		ECECA2F225E82B7C951658D7 /* UploadSequenceEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD65943C32E150F1CD65C31 /* UploadSequenceEngine.swift */; };
 		EDD7FA1C758C8776A22FB608 /* ClassStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33FDB3383D90CD157408C55E /* ClassStore.swift */; };
+		EE814F85D07E6F1D75F15A4D /* ClassHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB9F278E629FEEADBDB66C3 /* ClassHistoryView.swift */; };
+		EF550165BF9562889AEED893 /* ClassExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3AB5AA5B658DBA2305C06C /* ClassExporter.swift */; };
 		F0031D50B719E5B6E5A725B3 /* ClassMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CF8423AAE74F7943D16C41 /* ClassMenu.swift */; };
 		F06EE0A97CB77096A337AA8B /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = C066E2B991AA4F56B2724263 /* sounds */; };
 		F51321D1F45AE1ED90BC9528 /* ClassNotesGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995BB49B3CA698F9030FA4CE /* ClassNotesGenerator.swift */; };
@@ -109,13 +119,16 @@
 		15A1A8206F73376F4CAF2057 /* IslandRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IslandRootView.swift; sourceTree = "<group>"; };
 		192844E7299DEED5C2372067 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1BE21C2B315D37AA70ED45E9 /* SoundEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundEngine.swift; sourceTree = "<group>"; };
+		1EB9F278E629FEEADBDB66C3 /* ClassHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassHistoryView.swift; sourceTree = "<group>"; };
 		22EB583883EE5409EC00ABE8 /* TranscriptionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptionEngine.swift; sourceTree = "<group>"; };
 		2EF78999D68D56ADE4CEFBE2 /* StripePoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StripePoller.swift; sourceTree = "<group>"; };
 		3104222B3F17BA5E8DEA5277 /* CalcomPoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcomPoller.swift; sourceTree = "<group>"; };
 		3232F258523DD8D09B670363 /* FileDropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDropView.swift; sourceTree = "<group>"; };
 		33FDB3383D90CD157408C55E /* ClassStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassStore.swift; sourceTree = "<group>"; };
 		410D5CA50C88277052A43555 /* ClassNotes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassNotes.swift; sourceTree = "<group>"; };
+		4A19BBD4D5FD09AD97035E7E /* ClassRetranscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRetranscriber.swift; sourceTree = "<group>"; };
 		4DC2A07E42245A8CF3BBD2AB /* CoucouAppStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoucouAppStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4E3AB5AA5B658DBA2305C06C /* ClassExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassExporter.swift; sourceTree = "<group>"; };
 		506824380E9C80B9BC6DCE72 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		55CF8423AAE74F7943D16C41 /* ClassMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassMenu.swift; sourceTree = "<group>"; };
 		601D47E6F177B8E4AA2F38A7 /* ClassIslandViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassIslandViews.swift; sourceTree = "<group>"; };
@@ -123,6 +136,7 @@
 		6EFE292E36A1A3B23292DC3F /* AppAudioCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAudioCapture.swift; sourceTree = "<group>"; };
 		6FD65943C32E150F1CD65C31 /* UploadSequenceEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadSequenceEngine.swift; sourceTree = "<group>"; };
 		71718D1B87A39A4879DD2A9D /* VercelPoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VercelPoller.swift; sourceTree = "<group>"; };
+		79BBCB1D7436B27657DD10BD /* ClassWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassWindowController.swift; sourceTree = "<group>"; };
 		79D8DD79C3DD9BBC584B3CB2 /* HookServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookServer.swift; sourceTree = "<group>"; };
 		7C1A7D5CBE2AC084A10C5FF3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		7F67452919C5EBC8D416E94D /* ClassRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRecorder.swift; sourceTree = "<group>"; };
@@ -149,6 +163,7 @@
 		D710BD7834228045869D0184 /* IslandWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IslandWindowController.swift; sourceTree = "<group>"; };
 		D716F28DBADC472D9842A3E5 /* WhisperModelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperModelManager.swift; sourceTree = "<group>"; };
 		D8212018F09EA1E96FBD63CD /* IslandStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IslandStateMachine.swift; sourceTree = "<group>"; };
+		E4A584D09F71F05248FA8C05 /* ClassHistoryParts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassHistoryParts.swift; sourceTree = "<group>"; };
 		E91B733ADC638E14E9BB6EFA /* WindowContextCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowContextCapture.swift; sourceTree = "<group>"; };
 		EE1FA5C515A49FCFE1DB40D5 /* ClassMochiIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassMochiIndicator.swift; sourceTree = "<group>"; };
 		EF23423E8E62AA83A42F6BF0 /* ClassAudioPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassAudioPipeline.swift; sourceTree = "<group>"; };
@@ -210,6 +225,9 @@
 				EF23423E8E62AA83A42F6BF0 /* ClassAudioPipeline.swift */,
 				C5F69636999C21F9A5611FD7 /* ClassAudioWriter.swift */,
 				8AFA6237A7952F30674C7431 /* ClassChat.swift */,
+				4E3AB5AA5B658DBA2305C06C /* ClassExporter.swift */,
+				E4A584D09F71F05248FA8C05 /* ClassHistoryParts.swift */,
+				1EB9F278E629FEEADBDB66C3 /* ClassHistoryView.swift */,
 				601D47E6F177B8E4AA2F38A7 /* ClassIslandViews.swift */,
 				55CF8423AAE74F7943D16C41 /* ClassMenu.swift */,
 				EE1FA5C515A49FCFE1DB40D5 /* ClassMochiIndicator.swift */,
@@ -217,9 +235,11 @@
 				995BB49B3CA698F9030FA4CE /* ClassNotesGenerator.swift */,
 				BBA9065F2A32331DD418DD56 /* ClassQuickAsk.swift */,
 				7F67452919C5EBC8D416E94D /* ClassRecorder.swift */,
+				4A19BBD4D5FD09AD97035E7E /* ClassRetranscriber.swift */,
 				12F46CD839DFF74D7F9A4BCA /* ClassSettingsSection.swift */,
 				33FDB3383D90CD157408C55E /* ClassStore.swift */,
 				92D9378D4F2A5DDB2D4D613E /* ClassTranscriber.swift */,
+				79BBCB1D7436B27657DD10BD /* ClassWindowController.swift */,
 				8935A060AF62094D19F34EF0 /* MicCapture.swift */,
 				22EB583883EE5409EC00ABE8 /* TranscriptionEngine.swift */,
 				CE096CE7F48BFFFA7B092B0D /* WhisperKitEngine.swift */,
@@ -381,6 +401,9 @@
 				44C813B553552EAEAF1666D2 /* ClassAudioPipeline.swift in Sources */,
 				36AB09C0AD9F6248EB1844FC /* ClassAudioWriter.swift in Sources */,
 				FA0713E369838DCB7AB93500 /* ClassChat.swift in Sources */,
+				EF550165BF9562889AEED893 /* ClassExporter.swift in Sources */,
+				C4B45EDA999E8019F5BF9193 /* ClassHistoryParts.swift in Sources */,
+				8A1BAA0BCE32986937A82E13 /* ClassHistoryView.swift in Sources */,
 				B88398368AAF6BECB10D61FD /* ClassIslandViews.swift in Sources */,
 				DD3F16ED865BE419ED7BC238 /* ClassMenu.swift in Sources */,
 				D1F0FB58421C8FF142572C65 /* ClassMochiIndicator.swift in Sources */,
@@ -388,9 +411,11 @@
 				F51321D1F45AE1ED90BC9528 /* ClassNotesGenerator.swift in Sources */,
 				8618B5AF8700E24DDD3E7B42 /* ClassQuickAsk.swift in Sources */,
 				144DDD2C049937DBD19D2DD0 /* ClassRecorder.swift in Sources */,
+				33DC257762B1D45D0879FD2B /* ClassRetranscriber.swift in Sources */,
 				CDD9E0035B465AB08A74DBA3 /* ClassSettingsSection.swift in Sources */,
 				821151F706BAE7FFD69C9FF1 /* ClassStore.swift in Sources */,
 				F8947BBD5DEAA34D02476408 /* ClassTranscriber.swift in Sources */,
+				857E748C550039C605AFAB53 /* ClassWindowController.swift in Sources */,
 				2DEB459FBD0BA3CEAAA5FDE9 /* ClaudeService.swift in Sources */,
 				E776C7D1DE5C62EA8D4BA3E3 /* FileDropView.swift in Sources */,
 				C808B654C84D9F71DBF8493A /* GithubPoller.swift in Sources */,
@@ -433,6 +458,9 @@
 				34A4AB94366007200426EC95 /* ClassAudioPipeline.swift in Sources */,
 				324C3168AA9D78ABB7090AD7 /* ClassAudioWriter.swift in Sources */,
 				14B2E66B02D6013071B65437 /* ClassChat.swift in Sources */,
+				02D8FA84F861D19F1B4DC85C /* ClassExporter.swift in Sources */,
+				016C98A94848817055B03948 /* ClassHistoryParts.swift in Sources */,
+				EE814F85D07E6F1D75F15A4D /* ClassHistoryView.swift in Sources */,
 				877D0C4B99C3D4E2856BC8DB /* ClassIslandViews.swift in Sources */,
 				F0031D50B719E5B6E5A725B3 /* ClassMenu.swift in Sources */,
 				007EF6E3FC1C1934F4E6CAFA /* ClassMochiIndicator.swift in Sources */,
@@ -440,9 +468,11 @@
 				6AC9E73A54519D42BBBAC762 /* ClassNotesGenerator.swift in Sources */,
 				B1A682354BFD13F8C3661C52 /* ClassQuickAsk.swift in Sources */,
 				8E324F2D654D7A21A82B1C10 /* ClassRecorder.swift in Sources */,
+				724ED8DC387F46370BC23BA7 /* ClassRetranscriber.swift in Sources */,
 				8971B582DBFB7D6A1020BFAE /* ClassSettingsSection.swift in Sources */,
 				EDD7FA1C758C8776A22FB608 /* ClassStore.swift in Sources */,
 				13D9C73676EE6549FEFD6627 /* ClassTranscriber.swift in Sources */,
+				CAB5CBD785F08F47F7E317AA /* ClassWindowController.swift in Sources */,
 				0329E76BA4A8FEEA8A6D76E7 /* ClaudeService.swift in Sources */,
 				2132477000FD77F7EB234DAA /* FileDropView.swift in Sources */,
 				C18227D148D99FE6EE3CC51A /* GithubPoller.swift in Sources */,

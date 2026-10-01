@@ -61,6 +61,8 @@ final class ClassMenu: NSObject, NSMenuDelegate {
             menu.addItem(item(title: "Marcar: importante", action: #selector(markImportant)))
             menu.addItem(.separator())
             menu.addItem(item(title: "Parar la clase", action: #selector(stopClass)))
+            menu.addItem(.separator())
+            menu.addItem(item(title: "Mis clases…", action: #selector(showHistory)))
         } else {
             // Listing apps is async (ScreenCaptureKit), so the menu shows what
             // the last refresh found and kicks off another one for next time.
@@ -84,6 +86,7 @@ final class ClassMenu: NSObject, NSMenuDelegate {
                 menu.addItem(loading)
             } else {
                 menu.addItem(item(title: "Empezar una clase…", action: #selector(showStart)))
+            menu.addItem(item(title: "Mis clases…", action: #selector(showHistory)))
 
             // Last class: notes state and a way at them.
             if let last = ClassStore.shared.allClasses().first(where: { $0.isComplete }) {
@@ -180,6 +183,10 @@ final class ClassMenu: NSObject, NSMenuDelegate {
 
     private var lastClass: ClassMeta? {
         ClassStore.shared.allClasses().first { $0.isComplete }
+    }
+
+    @objc private func showHistory() {
+        ClassWindowController.shared.show()
     }
 
     @objc private func openNotes() {

@@ -25,8 +25,11 @@ enum ClassLanguage: String, Codable, CaseIterable, Sendable {
 /// Who is speaking. The two audio sources are captured separately, so this is
 /// known exactly — no diarization involved.
 enum ClassSpeaker: String, Codable, Sendable {
-    case clase   // the meeting app's audio (teacher, other students)
-    case yo      // the local microphone
+    case clase        // the meeting app's audio (teacher, other students)
+    case yo           // the local microphone
+    /// Only produced by re-transcribing a saved recording: audio.m4a is a
+    /// mix of both sources, so the two voices can no longer be told apart.
+    case desconocido
 }
 
 // MARK: - Documents

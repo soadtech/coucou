@@ -20,6 +20,11 @@ protocol TranscriptionEngine: Sendable {
     func transcribe(samples: [Float],
                     offset: TimeInterval,
                     speaker: ClassSpeaker) async throws -> [TranscriptSegment]
+
+    /// Transcribes a saved recording end to end. Used to rebuild a transcript
+    /// when the live one failed or the model was missing at the time. The file
+    /// holds both sources mixed, so segments come back as `.desconocido`.
+    func transcribeFile(at url: URL) async throws -> [TranscriptSegment]
 }
 
 enum TranscriptionError: LocalizedError {

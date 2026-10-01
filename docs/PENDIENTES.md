@@ -3,8 +3,8 @@
 Cosas conocidas que faltan o hay que mejorar. Se anotan según aparecen, con el
 motivo, para que no se pierdan entre fases.
 
-Estado: fases 1 (captura de audio) y 2 (transcripción) hechas.
-Pendientes: 3 (UI en el notch), 4 (apuntes + Q&A), 5 (historial y exportación).
+Estado: las cinco fases están hechas (captura, transcripción, UI en el notch,
+apuntes y Q&A, historial y exportación).
 
 ---
 
@@ -56,13 +56,15 @@ ScreenCaptureKit cuando el permiso ya está concedido.)*
 
 ## Funcionalidad
 
-### 3. No se puede volver a transcribir una clase
+### 3. ~~No se puede volver a transcribir una clase~~ — HECHO
 
-Si la transcripción falla, o el modelo no estaba descargado, ese tramo de texto
-se pierde aunque el audio esté intacto en disco. Debería poder relanzarse la
-transcripción sobre el `.m4a` ya guardado.
+Resuelto en la Fase 5: en "Mis clases" → Transcripción hay un botón para
+rehacerla desde el `audio.m4a` guardado (`ClassRetranscriber`).
 
-Encaja de forma natural en la Fase 5, junto al historial.
+Queda una limitación inherente: la grabación mezcla las dos fuentes, así que
+una transcripción rehecha no puede distinguir al profesor del estudiante y sus
+segmentos salen como `desconocido`. Para evitarlo habría que guardar las dos
+pistas por separado, lo que duplicaría el espacio en disco.
 
 ### 3b. El atajo global de marcar no llega a dispararse
 
