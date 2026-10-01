@@ -31,8 +31,9 @@ struct IslandViewContent: View {
         case .classListening: ClassListeningView()
         case .classAsk:       ClassAskView()
         case .classChat:      ClassLibraryChatView()
+        case .onboarding:     OnboardingView()
         #else
-        case .classHome, .classStart, .classListening, .classAsk, .classChat: EmptyView()
+        case .classHome, .classStart, .classListening, .classAsk, .classChat, .onboarding: EmptyView()
         #endif
         }
     }

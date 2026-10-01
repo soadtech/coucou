@@ -224,8 +224,13 @@ final class ClassRecorder: ObservableObject {
             guard var meta = finished,
                   let saved = ClassStore.shared.loadMeta(meta.id) else { return }
             meta = saved
-            _ = await ClassNotesGenerator.shared.generate(for: meta)
-            NotificationCenter.default.post(name: .classNotesReady, object: meta.id)
+            // Without a key there are no notes, and failing on every single
+            // class would just be noise: recording and transcription are the
+            // part that works without AI.
+            if GeminiService.shared.isConfigured {
+                _ = await ClassNotesGenerator.shared.generate(for: meta)
+                NotificationCenter.default.post(name: .classNotesReady, object: meta.id)
+            }
         }
 
         appAudio.onBuffer = nil

@@ -112,6 +112,11 @@ final class AppState: ObservableObject {
     var hotkeyFlags: UInt = NSEvent.ModifierFlags([.command, .shift]).rawValue {
         didSet { UserDefaults.standard.set(Int(hotkeyFlags), forKey: "hotkeyFlags") }
     }
+    /// False until the first-run introduction has been seen.
+    @Published var hasOnboarded: Bool = false {
+        didSet { UserDefaults.standard.set(hasOnboarded, forKey: "hasOnboarded") }
+    }
+
     /// Class-only mode: Coucou becomes a class and meeting recorder and
     /// nothing else. Claude Code hooks, the integration pills, the general
     /// chat and the file drop all stay in the code but are never loaded, so
@@ -219,6 +224,7 @@ final class AppState: ObservableObject {
         if let v = ud.object(forKey: "hotkeyFlags")   as? Int   { hotkeyFlags = UInt(v) }
         if let v = ud.object(forKey: "hotkeyCode")    as? Int   { hotkeyCode = UInt16(v) }
         if let v = ud.object(forKey: "classOnlyMode") as? Bool { classOnlyMode = v }
+        if let v = ud.object(forKey: "hasOnboarded") as? Bool { hasOnboarded = v }
         if let v = ud.object(forKey: "classMarkHotkeyEnabled") as? Bool { classMarkHotkeyEnabled = v }
         if let v = ud.object(forKey: "classMarkFlags") as? Int { classMarkFlags = UInt(v) }
         if let v = ud.object(forKey: "classMarkCode")  as? Int { classMarkCode = UInt16(v) }

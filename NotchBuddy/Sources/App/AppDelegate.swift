@@ -86,5 +86,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         NotificationCenter.default.addObserver(self, selector: #selector(openSettings),
                                                name: .openFullSettings, object: nil)
+
+        #if !APPSTORE
+        // First run: let Mochi finish waving, then introduce itself. Nobody
+        // discovers a menu-bar submenu on their own.
+        if AppState.shared.classOnlyMode && !AppState.shared.hasOnboarded {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5.2) { [weak self] in
+                guard !AppState.shared.hasOnboarded else { return }
+                self?.islandController?.expand(to: .onboarding)
+            }
+        }
+        #endif
     }
 }

@@ -14,6 +14,11 @@ struct ClassSettingsSection: View {
     @State private var markFlags: UInt  = AppState.shared.classMarkFlags
     @State private var markCode: UInt16 = AppState.shared.classMarkCode
     @State private var accessibilityTrusted = AXIsProcessTrusted()
+    @State private var geminiKey: String = KeychainStore.shared.get(GeminiService.keychainKey) ?? ""
+    @State private var geminiModel: String = GeminiService.shared.model
+    @State private var checkingKey = false
+    @State private var keyMessage: String?
+    @State private var keyOK = false
 
     var body: some View {
         GroupBox("Modo Clase") {
@@ -24,6 +29,33 @@ struct ClassSettingsSection: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
+
+                Divider().opacity(0.25)
+
+                // MARK: AI
+                Text("Inteligencia artificial").font(.caption).foregroundStyle(.secondary)
+                HStack(spacing: 8) {
+                    SecureField("API key de Gemini", text: $geminiKey)
+                        .textFieldStyle(.roundedBorder)
+                    Button(checkingKey ? "Comprobando…" : "Guardar") { saveKey() }
+                        .disabled(checkingKey || geminiKey.isEmpty)
+                }
+                if let keyMessage {
+                    Text(keyMessage)
+                        .font(.caption)
+                        .foregroundStyle(keyOK ? Color.secondary : Color.red)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                Text("Sin key, Coucou graba, transcribe en local, guarda tus marcas y conserva el historial. Los apuntes y el chat sí la necesitan. Solo se envía texto: el audio nunca sale de este Mac.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                HStack(spacing: 8) {
+                    Text("Modelo").font(.caption)
+                    TextField("gemini-2.5-flash", text: $geminiModel)
+                        .textFieldStyle(.roundedBorder)
+                        .onSubmit { GeminiService.shared.model = geminiModel }
+                }
 
                 Divider().opacity(0.25)
 
@@ -95,6 +127,27 @@ struct ClassSettingsSection: View {
             .padding(6)
         }
         .onAppear { accessibilityTrusted = AXIsProcessTrusted() }
+    }
+
+    /// The key is checked against the API before being kept, so a typo shows
+    /// up here instead of halfway through generating notes for a real meeting.
+    private func saveKey() {
+        let trimmed = geminiKey.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty, !checkingKey else { return }
+        checkingKey = true
+        keyMessage = nil
+        Task {
+            let result = await GeminiService.shared.validate(key: trimmed)
+            checkingKey = false
+            switch result {
+            case .success:
+                keyOK = true
+                keyMessage = "✓ Key válida y guardada."
+            case .failure(let error):
+                keyOK = false
+                keyMessage = error.localizedDescription
+            }
+        }
     }
 
     private var modelChoices: [String] {

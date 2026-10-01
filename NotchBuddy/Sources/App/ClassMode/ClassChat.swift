@@ -42,6 +42,11 @@ final class ClassChat: ObservableObject {
         isAnswering = true
         defer { isAnswering = false }
 
+        guard GeminiService.shared.isConfigured else {
+            error = "Preguntar necesita una API key de Gemini. Configúrala en Settings → Modo Clase."
+            messages.removeLast()
+            return
+        }
         guard let context = buildContext() else {
             error = "Esta clase no tiene transcripción todavía."
             return
@@ -57,17 +62,16 @@ final class ClassChat: ObservableObject {
         """
 
         // The class goes in the first turn; later turns carry only the exchange.
-        var payload: [[String: Any]] = []
+        var payload: [GeminiService.Message] = []
         for (index, message) in messages.enumerated() {
-            let role = message.role == .user ? "user" : "assistant"
             let text = (index == 0 && message.role == .user)
                 ? "\(context)\n\nPregunta: \(message.text)"
                 : message.text
-            payload.append(["role": role, "content": text])
+            payload.append(message.role == .user ? .user(text) : .model(text))
         }
 
         do {
-            let answer = try await ClaudeService.shared.complete(
+            let answer = try await GeminiService.shared.complete(
                 system: system, messages: payload, maxTokens: 2048)
             messages.append(Message(role: .assistant, text: answer))
         } catch {

@@ -13,7 +13,7 @@ enum IslandView: String, CaseIterable {
     case confused, upload, uploading, choose, mail, prompt
     case searching, result, note, settings, greeting
     // Class Mode
-    case classHome, classStart, classListening, classAsk, classChat
+    case classHome, classStart, classListening, classAsk, classChat, onboarding
 }
 
 // MARK: - Bot State
@@ -117,6 +117,9 @@ enum IslandConst {
         .classAsk:       ViewLayout(height: 176, botX: 52, botY: nil, botDiameter: 44, agentMode: .none),
         // Taller on purpose: a chat you cannot read is not a chat.
         .classChat:      ViewLayout(height: 268, botX: 48, botY: 64,  botDiameter: 40, agentMode: .none),
+        // First run. Mochi is bigger here than anywhere else: this is the one
+        // screen where the character is the point.
+        .onboarding:     ViewLayout(height: 200, botX: 92, botY: nil, botDiameter: 84, agentMode: .none),
     ]
 
     // Project colors — keyed by lowercase display name or slug
@@ -175,5 +178,6 @@ enum IslandConst {
         .classListening: "rgba(244,80,94,0.28)",
         .classAsk:       "rgba(139,92,246,0.30)",
         .classChat:      "rgba(99,102,241,0.24)",
+        .onboarding:     "rgba(139,92,246,0.40)",
     ]
 }

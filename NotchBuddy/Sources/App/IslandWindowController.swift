@@ -377,6 +377,9 @@ final class IslandWindowController: NSWindowController {
         NotificationCenter.default.addObserver(forName: .islandShowClass, object: nil, queue: .main) { [weak self] _ in
             self?.expand(to: .classListening)
         }
+        NotificationCenter.default.addObserver(forName: .islandShowClassHome, object: nil, queue: .main) { [weak self] _ in
+            self?.expand(to: .classHome)
+        }
         NotificationCenter.default.addObserver(forName: .islandShowClassChat, object: nil, queue: .main) { [weak self] _ in
             self?.expand(to: .classChat)
         }
@@ -709,6 +712,9 @@ final class IslandWindowController: NSWindowController {
 
     func defaultView() -> IslandView {
         #if !APPSTORE
+        // First run wins over everything: the island has nothing useful to
+        // show until the user knows what it is.
+        if state.classOnlyMode && !state.hasOnboarded { return .onboarding }
         // Class-only mode: opening the notch lands on classes, and a class in
         // progress always wins — that is what you are there to see.
         if state.classOnlyMode {
@@ -890,6 +896,7 @@ extension Notification.Name {
     static let islandShowClass      = Notification.Name("notchBuddy.islandShowClass")
     static let islandShowClassAsk   = Notification.Name("notchBuddy.islandShowClassAsk")
     static let islandShowClassChat  = Notification.Name("notchBuddy.islandShowClassChat")
+    static let islandShowClassHome  = Notification.Name("notchBuddy.islandShowClassHome")
 }
 
 // MARK: - islandSize (takes real notch dimensions)

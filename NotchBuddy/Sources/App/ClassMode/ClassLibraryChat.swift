@@ -52,6 +52,11 @@ final class ClassLibraryChat: ObservableObject {
         isAnswering = true
         defer { isAnswering = false }
 
+        guard GeminiService.shared.isConfigured else {
+            error = "El chat necesita una API key de Gemini. Configúrala en Settings → Modo Clase."
+            messages.removeLast()
+            return
+        }
         guard let context = buildContext() else {
             error = "Todavía no hay ninguna clase con apuntes o transcripción."
             messages.removeLast()
@@ -68,28 +73,19 @@ final class ClassLibraryChat: ObservableObject {
         Sin markdown: texto plano con saltos de línea.
         """
 
-        var payload: [[String: Any]] = []
+        // Gemini has no per-block cache_control; its context caching is a
+        // separate API. The library is resent each turn, which its long context
+        // and low per-token price make acceptable for now.
+        var payload: [GeminiService.Message] = []
         for (index, message) in messages.enumerated() {
-            let role = message.role == .user ? "user" : "assistant"
-            if index == 0 && message.role == .user {
-                // The library goes in its own block, marked for caching: it is
-                // large and identical on every turn, so paying for it once is
-                // the difference between a usable chat and an expensive one.
-                payload.append([
-                    "role": role,
-                    "content": [
-                        ["type": "text", "text": context,
-                         "cache_control": ["type": "ephemeral"]],
-                        ["type": "text", "text": "Pregunta: \(message.text)"],
-                    ],
-                ])
-            } else {
-                payload.append(["role": role, "content": message.text])
-            }
+            let text = (index == 0 && message.role == .user)
+                ? "\(context)\n\nPregunta: \(message.text)"
+                : message.text
+            payload.append(message.role == .user ? .user(text) : .model(text))
         }
 
         do {
-            let answer = try await ClaudeService.shared.complete(
+            let answer = try await GeminiService.shared.complete(
                 system: system, messages: payload, maxTokens: 2048)
             messages.append(Message(role: .assistant, text: answer))
         } catch {

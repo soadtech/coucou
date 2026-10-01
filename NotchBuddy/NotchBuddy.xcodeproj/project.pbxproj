@@ -57,9 +57,12 @@
 		6AC9E73A54519D42BBBAC762 /* ClassNotesGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995BB49B3CA698F9030FA4CE /* ClassNotesGenerator.swift */; };
 		7191F1ABF77208C3042B91CA /* AudioPermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9873BBDCA319C8EC3FA2AFE5 /* AudioPermissions.swift */; };
 		724ED8DC387F46370BC23BA7 /* ClassRetranscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A19BBD4D5FD09AD97035E7E /* ClassRetranscriber.swift */; };
+		77025135FB835DEC4B64CDA7 /* GeminiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8E17E9F7191C4C08FBC42D /* GeminiService.swift */; };
 		78B3C6814431B2DD9D1F4949 /* SoundEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE21C2B315D37AA70ED45E9 /* SoundEngine.swift */; };
 		78FCEDC8F78B683AB10E6529 /* NotionPoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE03E03D1804B0B92C5C2DAD /* NotionPoller.swift */; };
 		7E16E0A811E8E3B599B9BA51 /* WhisperKitEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE096CE7F48BFFFA7B092B0D /* WhisperKitEngine.swift */; };
+		8007B41DF8DD5148F89B5ED5 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB767311CF026A51F88C8C47 /* OnboardingView.swift */; };
+		80796CA10C600BA86ED101E8 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB767311CF026A51F88C8C47 /* OnboardingView.swift */; };
 		821151F706BAE7FFD69C9FF1 /* ClassStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33FDB3383D90CD157408C55E /* ClassStore.swift */; };
 		857E748C550039C605AFAB53 /* ClassWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79BBCB1D7436B27657DD10BD /* ClassWindowController.swift */; };
 		8618B5AF8700E24DDD3E7B42 /* ClassQuickAsk.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA9065F2A32331DD418DD56 /* ClassQuickAsk.swift */; };
@@ -81,6 +84,7 @@
 		B605F976F4141435F27CF266 /* IslandRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A1A8206F73376F4CAF2057 /* IslandRootView.swift */; };
 		B88398368AAF6BECB10D61FD /* ClassIslandViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601D47E6F177B8E4AA2F38A7 /* ClassIslandViews.swift */; };
 		C0E18D0F6F5F6D131E6066B8 /* GreetingCanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C581F7B1A9F14B281B60063E /* GreetingCanvasView.swift */; };
+		C10DA083CC310E703FE434CB /* GeminiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8E17E9F7191C4C08FBC42D /* GeminiService.swift */; };
 		C18227D148D99FE6EE3CC51A /* GithubPoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB8B6E5E9DA6164F979E88F /* GithubPoller.swift */; };
 		C24D863967D8D32D828ED4B1 /* BotEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4540F630F8BA04AFFFA3979 /* BotEngine.swift */; };
 		C4B45EDA999E8019F5BF9193 /* ClassHistoryParts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A584D09F71F05248FA8C05 /* ClassHistoryParts.swift */; };
@@ -141,6 +145,7 @@
 		79BBCB1D7436B27657DD10BD /* ClassWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassWindowController.swift; sourceTree = "<group>"; };
 		79D8DD79C3DD9BBC584B3CB2 /* HookServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookServer.swift; sourceTree = "<group>"; };
 		7C1A7D5CBE2AC084A10C5FF3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		7C8E17E9F7191C4C08FBC42D /* GeminiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiService.swift; sourceTree = "<group>"; };
 		7F193E261D81372D0862EBC8 /* ClassLibraryChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassLibraryChat.swift; sourceTree = "<group>"; };
 		7F67452919C5EBC8D416E94D /* ClassRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRecorder.swift; sourceTree = "<group>"; };
 		8935A060AF62094D19F34EF0 /* MicCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicCapture.swift; sourceTree = "<group>"; };
@@ -161,6 +166,7 @@
 		C2E4F18AA940EFF7E047B9F7 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		C581F7B1A9F14B281B60063E /* GreetingCanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreetingCanvasView.swift; sourceTree = "<group>"; };
 		C5F69636999C21F9A5611FD7 /* ClassAudioWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassAudioWriter.swift; sourceTree = "<group>"; };
+		CB767311CF026A51F88C8C47 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		CE096CE7F48BFFFA7B092B0D /* WhisperKitEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperKitEngine.swift; sourceTree = "<group>"; };
 		D4540F630F8BA04AFFFA3979 /* BotEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotEngine.swift; sourceTree = "<group>"; };
 		D710BD7834228045869D0184 /* IslandWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IslandWindowController.swift; sourceTree = "<group>"; };
@@ -244,7 +250,9 @@
 				33FDB3383D90CD157408C55E /* ClassStore.swift */,
 				92D9378D4F2A5DDB2D4D613E /* ClassTranscriber.swift */,
 				79BBCB1D7436B27657DD10BD /* ClassWindowController.swift */,
+				7C8E17E9F7191C4C08FBC42D /* GeminiService.swift */,
 				8935A060AF62094D19F34EF0 /* MicCapture.swift */,
+				CB767311CF026A51F88C8C47 /* OnboardingView.swift */,
 				22EB583883EE5409EC00ABE8 /* TranscriptionEngine.swift */,
 				CE096CE7F48BFFFA7B092B0D /* WhisperKitEngine.swift */,
 				D716F28DBADC472D9842A3E5 /* WhisperModelManager.swift */,
@@ -423,6 +431,7 @@
 				857E748C550039C605AFAB53 /* ClassWindowController.swift in Sources */,
 				2DEB459FBD0BA3CEAAA5FDE9 /* ClaudeService.swift in Sources */,
 				E776C7D1DE5C62EA8D4BA3E3 /* FileDropView.swift in Sources */,
+				C10DA083CC310E703FE434CB /* GeminiService.swift in Sources */,
 				C808B654C84D9F71DBF8493A /* GithubPoller.swift in Sources */,
 				8C32A0C3EAF536D3836F61D5 /* GreetingCanvasView.swift in Sources */,
 				2C798C3837A63B9BB561A1A0 /* HookServer.swift in Sources */,
@@ -435,6 +444,7 @@
 				0A267EE2955C7AD8E02A296C /* N8nPoller.swift in Sources */,
 				06BF5FD95E03010CAFDBF2D0 /* NotchBuddyApp.swift in Sources */,
 				2F36E3C6C073E968A682AFA4 /* NotionPoller.swift in Sources */,
+				8007B41DF8DD5148F89B5ED5 /* OnboardingView.swift in Sources */,
 				967B525F7D3837F31D740D18 /* ResendPoller.swift in Sources */,
 				56BE8C733F10A030A638FB60 /* SettingsView.swift in Sources */,
 				60E361FFE84C387E5E3ED1AA /* SoundEngine.swift in Sources */,
@@ -481,6 +491,7 @@
 				CAB5CBD785F08F47F7E317AA /* ClassWindowController.swift in Sources */,
 				0329E76BA4A8FEEA8A6D76E7 /* ClaudeService.swift in Sources */,
 				2132477000FD77F7EB234DAA /* FileDropView.swift in Sources */,
+				77025135FB835DEC4B64CDA7 /* GeminiService.swift in Sources */,
 				C18227D148D99FE6EE3CC51A /* GithubPoller.swift in Sources */,
 				C0E18D0F6F5F6D131E6066B8 /* GreetingCanvasView.swift in Sources */,
 				9DD56C95ECABDDCE23652D50 /* HookServer.swift in Sources */,
@@ -493,6 +504,7 @@
 				160EDB9D06275E2607DA5151 /* N8nPoller.swift in Sources */,
 				DE05D09A32117582AC93A24A /* NotchBuddyApp.swift in Sources */,
 				78FCEDC8F78B683AB10E6529 /* NotionPoller.swift in Sources */,
+				80796CA10C600BA86ED101E8 /* OnboardingView.swift in Sources */,
 				EB23ED9F1C12EA8B54A76A91 /* ResendPoller.swift in Sources */,
 				8D1C01F283FA7806119A1C85 /* SettingsView.swift in Sources */,
 				78B3C6814431B2DD9D1F4949 /* SoundEngine.swift in Sources */,

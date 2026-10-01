@@ -33,6 +33,10 @@ final class ClassNotesGenerator: ObservableObject {
         state = .generating(classId: meta.id)
         defer { if isGenerating { state = .idle } }
 
+        guard GeminiService.shared.isConfigured else {
+            state = .failed("Los apuntes necesitan una API key de Gemini. Configúrala en Settings → Modo Clase.")
+            return nil
+        }
         guard let transcript = ClassStore.shared.loadTranscript(meta.id),
               !transcript.segments.isEmpty else {
             state = .failed("Esta clase no tiene transcripción, así que no hay nada de lo que sacar apuntes.")
@@ -42,12 +46,13 @@ final class ClassNotesGenerator: ObservableObject {
 
         let body = Self.prompt(meta: meta, segments: transcript.segments, marks: marks)
         do {
-            let raw = try await ClaudeService.shared.complete(
+            let raw = try await GeminiService.shared.complete(
                 system: Self.systemPrompt(language: meta.language),
-                messages: [["role": "user", "content": body]],
+                messages: [.user(body)],
                 maxTokens: 8192)
 
             var doc = try Self.parse(raw, classId: meta.id)
+            doc.model = GeminiService.shared.model
             doc.generatedAt = .now
             doc.marks = Self.attachExcerpts(doc.marks, marks: marks, segments: transcript.segments)
 

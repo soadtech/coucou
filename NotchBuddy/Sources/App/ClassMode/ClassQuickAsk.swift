@@ -32,6 +32,10 @@ final class ClassQuickAsk: ObservableObject {
         isAsking = true
         defer { isAsking = false }
 
+        guard GeminiService.shared.isConfigured else {
+            error = "Preguntar necesita una API key de Gemini. Configúrala en Settings → Modo Clase."
+            return
+        }
         guard !segments.isEmpty else {
             error = "Todavía no hay nada transcrito de esta clase."
             return
@@ -58,9 +62,9 @@ final class ClassQuickAsk: ObservableObject {
         """
 
         do {
-            answer = try await ClaudeService.shared.complete(
+            answer = try await GeminiService.shared.complete(
                 system: system,
-                messages: [["role": "user", "content": prompt]],
+                messages: [.user(prompt)],
                 maxTokens: 1024)
         } catch {
             self.error = error.localizedDescription
