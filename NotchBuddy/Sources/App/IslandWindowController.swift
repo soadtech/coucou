@@ -335,8 +335,10 @@ final class IslandWindowController: NSWindowController {
     func collapse() {
         state.isPinned = false
         finishedPinTimer?.cancel()
-        // Tell FSM we're going to compact (from home)
-        if fsm.state == .home { fsm.mouseLeft() }
+        // Move the FSM now rather than scheduling it: leaving it in .home while
+        // the island is drawn compact makes the island unresponsive until the
+        // auto-collapse timer fires.
+        fsm.collapseNow()
         setMode(.compact)
         window?.resignKey()
     }

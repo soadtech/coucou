@@ -72,6 +72,18 @@ final class IslandStateMachine {
         }
     }
 
+    /// Collapse right now, without waiting for the auto-collapse timer.
+    ///
+    /// `mouseLeft()` only *schedules* home → petit, so a view that closes
+    /// itself would leave the FSM in `.home` while the island is already drawn
+    /// compact. Hovering or clicking then does nothing until the timer fires
+    /// — the island looks frozen for fifteen seconds.
+    func collapseNow() {
+        guard state == .home || state == .coucou else { return }
+        cancelTimers()
+        transition(to: .petit)
+    }
+
     /// Compact island clicked
     func click() {
         guard state == .petit else { return }
