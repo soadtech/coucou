@@ -842,14 +842,7 @@ final class IslandPanel: NSPanel {
         let s = AppState.shared
         let (w, fixedH) = islandSize(mode: s.mode, view: s.view,
                                       progress: s.uploadProgress, nw: nw, nh: nh)
-        let h: CGFloat
-        if s.mode == .expanded && s.view == .prompt {
-            let base: CGFloat = 240
-            let perMsg: CGFloat = 40
-            h = min(300, base + CGFloat(s.chatHistory.count) * perMsg)
-        } else {
-            h = fixedH
-        }
+        let h = (s.mode == .expanded ? expandedChatHeight(for: s.view) : nil) ?? fixedH
         return CGRect(x: (frame.width - w) / 2, y: frame.height - h, width: w, height: h)
     }
 }
@@ -902,6 +895,27 @@ extension Notification.Name {
 }
 
 // MARK: - islandSize (takes real notch dimensions)
+
+/// Height of a chat-style view, which grows with its conversation.
+///
+/// Lives here, in one place, because it is needed both to lay the island out
+/// and to work out where the mouse may click. Those two drifting apart is how
+/// you get an island you can see but not touch.
+@MainActor
+func expandedChatHeight(for view: IslandView) -> CGFloat? {
+    let base: CGFloat = 240
+    let perMessage: CGFloat = 40
+    switch view {
+    case .prompt:
+        return min(300, base + CGFloat(AppState.shared.chatHistory.count) * perMessage)
+    #if !APPSTORE
+    case .classChat:
+        return min(300, base + CGFloat(ClassLibraryChat.shared.messages.count) * perMessage)
+    #endif
+    default:
+        return nil
+    }
+}
 
 func islandSize(mode: IslandMode, view: IslandView,
                 progress: Double = 0,

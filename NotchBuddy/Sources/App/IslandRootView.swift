@@ -33,9 +33,7 @@ struct IslandContainer: View {
     private let closeEase  = Animation.timingCurve(0.45, 0, 0.2, 1, duration: 0.34)
 
     private var chatPromptHeight: CGFloat {
-        let base: CGFloat = 240
-        let perMsg: CGFloat = 40
-        return min(300, base + CGFloat(state.chatHistory.count) * perMsg)
+        expandedChatHeight(for: .prompt) ?? 240
     }
 
     /// Views that grow with their conversation.
@@ -47,15 +45,11 @@ struct IslandContainer: View {
         #endif
     }
 
+    /// Shared with the window controller, which needs the same number to work
+    /// out where the mouse may click. The two drifting apart is how you get an
+    /// island you can see but not touch.
     private func chatHeight(for view: IslandView) -> CGFloat {
-        #if !APPSTORE
-        if view == .classChat {
-            let base: CGFloat = 240
-            let perMsg: CGFloat = 40
-            return min(300, base + CGFloat(ClassLibraryChat.shared.messages.count) * perMsg)
-        }
-        #endif
-        return chatPromptHeight
+        expandedChatHeight(for: view) ?? chatPromptHeight
     }
 
     /// Pixels the content must be pushed down to clear the concave ear transparent area.
