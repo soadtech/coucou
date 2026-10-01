@@ -30,8 +30,9 @@ struct IslandViewContent: View {
         case .classStart:     ClassStartView()
         case .classListening: ClassListeningView()
         case .classAsk:       ClassAskView()
+        case .classChat:      ClassLibraryChatView()
         #else
-        case .classHome, .classStart, .classListening, .classAsk: EmptyView()
+        case .classHome, .classStart, .classListening, .classAsk, .classChat: EmptyView()
         #endif
         }
     }

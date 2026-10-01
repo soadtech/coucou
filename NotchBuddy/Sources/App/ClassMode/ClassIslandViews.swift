@@ -31,6 +31,9 @@ struct ClassHomeView: View {
                     PrimaryButton("Empezar una clase") {
                         NotificationCenter.default.post(name: .islandShowClassStart, object: nil)
                     }
+                    SecondaryButton("Preguntar") {
+                        NotificationCenter.default.post(name: .islandShowClassChat, object: nil)
+                    }
                     SecondaryButton("Mis clases") {
                         ClassWindowController.shared.show()
                         NotificationCenter.default.post(name: .islandCollapse, object: nil)
@@ -441,6 +444,114 @@ struct ChoiceChip: View {
                 .lineLimit(1)
         }
         .buttonStyle(.plain)
+    }
+}
+#endif
+
+#if !APPSTORE
+// MARK: - ClassLibraryChatView
+// The notch chat, back — but asking across every class recorded, not about
+// code. Notes of all classes always go in; transcripts fill whatever room is
+// left, newest first.
+
+struct ClassLibraryChatView: View {
+    @ObservedObject private var chat = ClassLibraryChat.shared
+    @State private var text = ""
+    @FocusState private var focused: Bool
+
+    var body: some View {
+        ZStack {
+            CardBackground(wash: .indigo)
+            VStack(alignment: .leading, spacing: 7) {
+                HStack(spacing: 8) {
+                    Text("Preguntar a mis clases")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundColor(Color(hex: "#F5F6F8"))
+                    if chat.classCount > 0 {
+                        Text("\(chat.classCount) clases")
+                            .font(.system(size: 10.5))
+                            .foregroundColor(Color(hex: "#8E939C"))
+                    }
+                    Spacer()
+                    if !chat.messages.isEmpty {
+                        SecondaryButton("Limpiar") { chat.reset() }
+                    }
+                }
+
+                ScrollViewReader { proxy in
+                    ScrollView(.vertical, showsIndicators: false) {
+                        VStack(alignment: .leading, spacing: 8) {
+                            if chat.messages.isEmpty {
+                                Text("Pregunta lo que quieras sobre todo lo que has grabado: vocabulario que viste, reglas que te explicaron, errores que repites. Solo se envía texto; el audio no sale del Mac.")
+                                    .font(.system(size: 11.5))
+                                    .foregroundColor(Color(hex: "#6E737C"))
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
+                            ForEach(chat.messages) { message in
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(message.role == .user ? "Tú" : "Mochi")
+                                        .font(.system(size: 9.5, weight: .semibold))
+                                        .foregroundColor(Color(hex: "#6E737C"))
+                                    Text(message.text)
+                                        .font(.system(size: 12))
+                                        .foregroundColor(Color(hex: "#E8E9EC"))
+                                        .textSelection(.enabled)
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .id(message.id)
+                            }
+                            if chat.isAnswering {
+                                TypingDotsView().id("typing")
+                            }
+                            if let error = chat.error {
+                                Text(error)
+                                    .font(.system(size: 11.5))
+                                    .foregroundColor(Color(hex: "#F4505E"))
+                            }
+                        }
+                    }
+                    .onChange(of: chat.messages.count) { _, _ in
+                        if let last = chat.messages.last {
+                            withAnimation { proxy.scrollTo(last.id, anchor: .bottom) }
+                        }
+                    }
+                    .onChange(of: chat.isAnswering) { _, answering in
+                        if answering { withAnimation { proxy.scrollTo("typing", anchor: .bottom) } }
+                    }
+                }
+                .frame(maxHeight: .infinity)
+
+                HStack(spacing: 8) {
+                    TextField("¿Qué quieres repasar?", text: $text)
+                        .textFieldStyle(.plain)
+                        .font(.system(size: 13))
+                        .focused($focused)
+                        .onSubmit(send)
+                    Button(action: send) {
+                        Image(systemName: "arrow.up")
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundColor(Color(hex: "#0B0C0E"))
+                    }
+                    .buttonStyle(SendButtonStyle())
+                    .disabled(text.isEmpty || chat.isAnswering)
+                }
+                .padding(.horizontal, 10).padding(.vertical, 6)
+                .background(Color.white.opacity(0.07))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .simultaneousGesture(TapGesture().onEnded { focused = true })
+            }
+            .padding(.leading, 86)
+            .padding(.trailing, 16)
+            .padding(.top, 10)
+            .padding(.bottom, 12)
+        }
+        .onAppear { focused = true }
+    }
+
+    private func send() {
+        let question = text
+        text = ""
+        Task { await chat.ask(question) }
     }
 }
 #endif

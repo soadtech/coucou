@@ -377,6 +377,9 @@ final class IslandWindowController: NSWindowController {
         NotificationCenter.default.addObserver(forName: .islandShowClass, object: nil, queue: .main) { [weak self] _ in
             self?.expand(to: .classListening)
         }
+        NotificationCenter.default.addObserver(forName: .islandShowClassChat, object: nil, queue: .main) { [weak self] _ in
+            self?.expand(to: .classChat)
+        }
         NotificationCenter.default.addObserver(forName: .islandShowClassAsk, object: nil, queue: .main) { [weak self] _ in
             ClassQuickAsk.shared.reset()
             self?.expand(to: .classAsk)
@@ -886,6 +889,7 @@ extension Notification.Name {
     static let islandShowClassStart = Notification.Name("notchBuddy.islandShowClassStart")
     static let islandShowClass      = Notification.Name("notchBuddy.islandShowClass")
     static let islandShowClassAsk   = Notification.Name("notchBuddy.islandShowClassAsk")
+    static let islandShowClassChat  = Notification.Name("notchBuddy.islandShowClassChat")
 }
 
 // MARK: - islandSize (takes real notch dimensions)

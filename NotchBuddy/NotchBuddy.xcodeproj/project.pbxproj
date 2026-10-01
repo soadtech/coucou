@@ -94,10 +94,12 @@
 		CDD9E0035B465AB08A74DBA3 /* ClassSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F46CD839DFF74D7F9A4BCA /* ClassSettingsSection.swift */; };
 		D1F0FB58421C8FF142572C65 /* ClassMochiIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1FA5C515A49FCFE1DB40D5 /* ClassMochiIndicator.swift */; };
 		D5F4D7A79E0A356446B7F74E /* TranscriptionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EB583883EE5409EC00ABE8 /* TranscriptionEngine.swift */; };
+		D7F5463F7CFA2BE3DDC94278 /* ClassLibraryChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F193E261D81372D0862EBC8 /* ClassLibraryChat.swift */; };
 		D82E93014C8087AE81511E40 /* IslandTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3CE3617E9D336DDBA10F7A /* IslandTypes.swift */; };
 		DCAC390FF9EC65B945A15B24 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 506824380E9C80B9BC6DCE72 /* Assets.xcassets */; };
 		DD3F16ED865BE419ED7BC238 /* ClassMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CF8423AAE74F7943D16C41 /* ClassMenu.swift */; };
 		DE05D09A32117582AC93A24A /* NotchBuddyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BD8F3CAA60CF37640759E1 /* NotchBuddyApp.swift */; };
+		E26E50BF8354EF913F0DA046 /* ClassLibraryChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F193E261D81372D0862EBC8 /* ClassLibraryChat.swift */; };
 		E4B9986674F4D425826F15A8 /* StripePoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EF78999D68D56ADE4CEFBE2 /* StripePoller.swift */; };
 		E776C7D1DE5C62EA8D4BA3E3 /* FileDropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232F258523DD8D09B670363 /* FileDropView.swift */; };
 		EB23ED9F1C12EA8B54A76A91 /* ResendPoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B5FDDE03F5F711146937E2 /* ResendPoller.swift */; };
@@ -139,6 +141,7 @@
 		79BBCB1D7436B27657DD10BD /* ClassWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassWindowController.swift; sourceTree = "<group>"; };
 		79D8DD79C3DD9BBC584B3CB2 /* HookServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HookServer.swift; sourceTree = "<group>"; };
 		7C1A7D5CBE2AC084A10C5FF3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		7F193E261D81372D0862EBC8 /* ClassLibraryChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassLibraryChat.swift; sourceTree = "<group>"; };
 		7F67452919C5EBC8D416E94D /* ClassRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassRecorder.swift; sourceTree = "<group>"; };
 		8935A060AF62094D19F34EF0 /* MicCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicCapture.swift; sourceTree = "<group>"; };
 		8AFA6237A7952F30674C7431 /* ClassChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassChat.swift; sourceTree = "<group>"; };
@@ -229,6 +232,7 @@
 				E4A584D09F71F05248FA8C05 /* ClassHistoryParts.swift */,
 				1EB9F278E629FEEADBDB66C3 /* ClassHistoryView.swift */,
 				601D47E6F177B8E4AA2F38A7 /* ClassIslandViews.swift */,
+				7F193E261D81372D0862EBC8 /* ClassLibraryChat.swift */,
 				55CF8423AAE74F7943D16C41 /* ClassMenu.swift */,
 				EE1FA5C515A49FCFE1DB40D5 /* ClassMochiIndicator.swift */,
 				410D5CA50C88277052A43555 /* ClassNotes.swift */,
@@ -405,6 +409,7 @@
 				C4B45EDA999E8019F5BF9193 /* ClassHistoryParts.swift in Sources */,
 				8A1BAA0BCE32986937A82E13 /* ClassHistoryView.swift in Sources */,
 				B88398368AAF6BECB10D61FD /* ClassIslandViews.swift in Sources */,
+				E26E50BF8354EF913F0DA046 /* ClassLibraryChat.swift in Sources */,
 				DD3F16ED865BE419ED7BC238 /* ClassMenu.swift in Sources */,
 				D1F0FB58421C8FF142572C65 /* ClassMochiIndicator.swift in Sources */,
 				AB496E9AC8181D73DBBE22DC /* ClassNotes.swift in Sources */,
@@ -462,6 +467,7 @@
 				016C98A94848817055B03948 /* ClassHistoryParts.swift in Sources */,
 				EE814F85D07E6F1D75F15A4D /* ClassHistoryView.swift in Sources */,
 				877D0C4B99C3D4E2856BC8DB /* ClassIslandViews.swift in Sources */,
+				D7F5463F7CFA2BE3DDC94278 /* ClassLibraryChat.swift in Sources */,
 				F0031D50B719E5B6E5A725B3 /* ClassMenu.swift in Sources */,
 				007EF6E3FC1C1934F4E6CAFA /* ClassMochiIndicator.swift in Sources */,
 				28EFBC7EF401E6A4DB9DEDCF /* ClassNotes.swift in Sources */,

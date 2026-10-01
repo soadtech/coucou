@@ -494,6 +494,7 @@ struct IslandHeader: View {
                 #if !APPSTORE
                 if state.classOnlyMode {
                     TabButton(icon: "headphones", view: .classHome, state: state)
+                    TabButton(icon: "bubble.left.fill", view: .classChat, state: state)
                     TabButton(icon: "list.bullet", view: .classHome, state: state, preAction: {
                         ClassWindowController.shared.show()
                     })

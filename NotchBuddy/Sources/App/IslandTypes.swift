@@ -13,7 +13,7 @@ enum IslandView: String, CaseIterable {
     case confused, upload, uploading, choose, mail, prompt
     case searching, result, note, settings, greeting
     // Class Mode
-    case classHome, classStart, classListening, classAsk
+    case classHome, classStart, classListening, classAsk, classChat
 }
 
 // MARK: - Bot State
@@ -115,6 +115,8 @@ enum IslandConst {
         .classStart:     ViewLayout(height: 176, botX: 58, botY: nil, botDiameter: 50, agentMode: .none),
         .classListening: ViewLayout(height: 214, botX: 54, botY: 74,  botDiameter: 46, agentMode: .none),
         .classAsk:       ViewLayout(height: 176, botX: 52, botY: nil, botDiameter: 44, agentMode: .none),
+        // Taller on purpose: a chat you cannot read is not a chat.
+        .classChat:      ViewLayout(height: 268, botX: 48, botY: 64,  botDiameter: 40, agentMode: .none),
     ]
 
     // Project colors — keyed by lowercase display name or slug
@@ -172,5 +174,6 @@ enum IslandConst {
         .classStart:     "rgba(139,92,246,0.35)",
         .classListening: "rgba(244,80,94,0.28)",
         .classAsk:       "rgba(139,92,246,0.30)",
+        .classChat:      "rgba(99,102,241,0.24)",
     ]
 }
