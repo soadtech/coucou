@@ -298,7 +298,7 @@ final class ClassRecorder: ObservableObject {
         return f
     }()
 
-    static func timecode(_ seconds: TimeInterval) -> String {
+    nonisolated static func timecode(_ seconds: TimeInterval) -> String {
         let total = Int(seconds.rounded())
         let h = total / 3600, m = (total % 3600) / 60, s = total % 60
         return h > 0 ? String(format: "%d:%02d:%02d", h, m, s)

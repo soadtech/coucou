@@ -128,6 +128,9 @@ final class ClassStore: @unchecked Sendable {
     func notesURL(for id: String)      -> URL { directory(for: id).appendingPathComponent("notes.json") }
     func notesMarkdownURL(for id: String) -> URL { directory(for: id).appendingPathComponent("notes.md") }
     func marksURL(for id: String)      -> URL { directory(for: id).appendingPathComponent("marks.json") }
+    /// Plain-text transcript, written as the class runs so it is readable
+    /// without the app and survives an unclean exit.
+    func transcriptTextURL(for id: String) -> URL { directory(for: id).appendingPathComponent("transcript.md") }
 
     @discardableResult
     func createDirectory(for id: String) throws -> URL {

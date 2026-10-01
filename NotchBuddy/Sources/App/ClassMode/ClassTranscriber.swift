@@ -15,6 +15,13 @@ private final class SpeakerBuffer: @unchecked Sendable {
     /// When this speaker's first sample arrived, relative to the class start.
     private var startOffset: TimeInterval?
 
+    /// Hard ceiling on the backlog: five minutes of audio. If transcription
+    /// cannot keep up on a slow machine, dropping the oldest audio is far
+    /// better than growing to gigabytes over a one-hour class — and nothing is
+    /// truly lost, since audio.m4a still holds everything and the class can be
+    /// re-transcribed afterwards.
+    private static let maxBacklogSeconds = 300.0
+
     func append(_ buffer: AVAudioPCMBuffer, classElapsed: TimeInterval) {
         guard let channel = buffer.floatChannelData?[0] else { return }
         let count = Int(buffer.frameLength)
@@ -26,6 +33,15 @@ private final class SpeakerBuffer: @unchecked Sendable {
         // speaker's timeline the first time we hear from it.
         if startOffset == nil { startOffset = classElapsed }
         samples.append(contentsOf: incoming)
+
+        let cap = Int(Self.maxBacklogSeconds * ClassAudio.transcriptionSampleRate)
+        if samples.count > cap {
+            let dropped = samples.count - cap
+            samples.removeFirst(dropped)
+            consumed += dropped        // keep timestamps honest about the gap
+            NSLog("[ClassTranscriber] backlog over %.0fs, dropped %.1fs of audio",
+                  Self.maxBacklogSeconds, Double(dropped) / ClassAudio.transcriptionSampleRate)
+        }
         lock.unlock()
     }
 
@@ -291,9 +307,30 @@ final class ClassTranscriber: ObservableObject {
     private func save() {
         guard let doc else { return }
         let snapshot = doc
+        let title = ClassStore.shared.loadMeta(snapshot.classId)?.title ?? "Clase"
         Task.detached(priority: .utility) {
             try? ClassStore.shared.saveTranscript(snapshot)
+            // Also as plain text, written every time: readable without the app,
+            // and whatever was transcribed survives even if the class never
+            // gets stopped cleanly.
+            let text = Self.plainText(snapshot.segments, title: title)
+            try? text.write(to: ClassStore.shared.transcriptTextURL(for: snapshot.classId),
+                            atomically: true, encoding: .utf8)
         }
+    }
+
+    nonisolated static func plainText(_ segments: [TranscriptSegment], title: String) -> String {
+        var out = "# \(title)\n\n"
+        for segment in segments {
+            let who: String
+            switch segment.speaker {
+            case .clase: who = "Clase"
+            case .yo: who = "Yo"
+            case .desconocido: who = "—"
+            }
+            out += "[\(ClassRecorder.timecode(segment.start))] \(who): \(segment.text)\n"
+        }
+        return out
     }
 }
 #endif
