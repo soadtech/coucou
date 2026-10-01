@@ -115,8 +115,9 @@ enum IslandConst {
         .classStart:     ViewLayout(height: 176, botX: 58, botY: nil, botDiameter: 50, agentMode: .none),
         .classListening: ViewLayout(height: 214, botX: 54, botY: 74,  botDiameter: 46, agentMode: .none),
         .classAsk:       ViewLayout(height: 176, botX: 52, botY: nil, botDiameter: 44, agentMode: .none),
-        // Taller on purpose: a chat you cannot read is not a chat.
-        .classChat:      ViewLayout(height: 268, botX: 48, botY: 64,  botDiameter: 40, agentMode: .none),
+        // Same geometry as the original chat view: it grows with the
+        // conversation, handled in IslandContainer.
+        .classChat:      ViewLayout(height: 160, botX: 52, botY: nil, botDiameter: 44, agentMode: .none),
         // First run. Mochi is bigger here than anywhere else: this is the one
         // screen where the character is the point.
         .onboarding:     ViewLayout(height: 200, botX: 92, botY: nil, botDiameter: 84, agentMode: .none),

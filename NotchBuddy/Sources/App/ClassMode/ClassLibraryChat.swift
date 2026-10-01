@@ -15,14 +15,9 @@ import SwiftUI
 final class ClassLibraryChat: ObservableObject {
     static let shared = ClassLibraryChat()
 
-    struct Message: Identifiable, Sendable {
-        enum Role { case user, assistant }
-        let id = UUID()
-        let role: Role
-        let text: String
-    }
-
-    @Published private(set) var messages: [Message] = []
+    /// Reuses the app's own ChatMessage so the existing bubbles render it
+    /// unchanged — this chat should look exactly like the original one.
+    @Published private(set) var messages: [ChatMessage] = []
     @Published private(set) var isAnswering = false
     @Published private(set) var error: String?
     /// How many classes the last context covered, for the UI to show.
@@ -39,6 +34,7 @@ final class ClassLibraryChat: ObservableObject {
 
     func reset() {
         messages = []
+        NotificationCenter.default.post(name: .classChatGrew, object: nil)
         error = nil
         cachedContext = nil
     }
@@ -47,7 +43,8 @@ final class ClassLibraryChat: ObservableObject {
         let trimmed = question.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty, !isAnswering else { return }
 
-        messages.append(Message(role: .user, text: trimmed))
+        messages.append(ChatMessage(role: .user, content: trimmed))
+        NotificationCenter.default.post(name: .classChatGrew, object: nil)
         error = nil
         isAnswering = true
         defer { isAnswering = false }
@@ -79,15 +76,16 @@ final class ClassLibraryChat: ObservableObject {
         var payload: [GeminiService.Message] = []
         for (index, message) in messages.enumerated() {
             let text = (index == 0 && message.role == .user)
-                ? "\(context)\n\nPregunta: \(message.text)"
-                : message.text
+                ? "\(context)\n\nPregunta: \(message.content)"
+                : message.content
             payload.append(message.role == .user ? .user(text) : .model(text))
         }
 
         do {
             let answer = try await GeminiService.shared.complete(
                 system: system, messages: payload, maxTokens: 2048)
-            messages.append(Message(role: .assistant, text: answer))
+            messages.append(ChatMessage(role: .assistant, content: answer))
+            NotificationCenter.default.post(name: .classChatGrew, object: nil)
         } catch {
             self.error = error.localizedDescription
             messages.removeLast()

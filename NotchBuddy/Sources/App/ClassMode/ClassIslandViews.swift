@@ -451,82 +451,60 @@ struct ChoiceChip: View {
 #if !APPSTORE
 // MARK: - ClassLibraryChatView
 // The notch chat, back — but asking across every class recorded, not about
-// code. Notes of all classes always go in; transcripts fill whatever room is
-// left, newest first.
+// code. Laid out exactly like the original chat view: same paddings, same
+// bubbles, same growth with the conversation. Only the context differs.
 
 struct ClassLibraryChatView: View {
     @ObservedObject private var chat = ClassLibraryChat.shared
-    @State private var text = ""
+    @State private var text: String = ""
     @FocusState private var focused: Bool
 
     var body: some View {
-        ZStack {
+        ZStack(alignment: .leading) {
             CardBackground(wash: .indigo)
-            VStack(alignment: .leading, spacing: 7) {
-                HStack(spacing: 8) {
-                    Text("Preguntar a mis clases")
-                        .font(.system(size: 13, weight: .semibold))
-                        .foregroundColor(Color(hex: "#F5F6F8"))
-                    if chat.classCount > 0 {
-                        Text("\(chat.classCount) clases")
-                            .font(.system(size: 10.5))
-                            .foregroundColor(Color(hex: "#8E939C"))
-                    }
-                    Spacer()
-                    if !chat.messages.isEmpty {
-                        SecondaryButton("Limpiar") { chat.reset() }
-                    }
-                }
 
-                ScrollViewReader { proxy in
-                    ScrollView(.vertical, showsIndicators: false) {
-                        VStack(alignment: .leading, spacing: 8) {
-                            if chat.messages.isEmpty {
-                                Text("Pregunta lo que quieras sobre todo lo que has grabado: vocabulario que viste, reglas que te explicaron, errores que repites. Solo se envía texto; el audio no sale del Mac.")
-                                    .font(.system(size: 11.5))
-                                    .foregroundColor(Color(hex: "#6E737C"))
-                                    .fixedSize(horizontal: false, vertical: true)
-                            }
-                            ForEach(chat.messages) { message in
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(message.role == .user ? "Tú" : "Mochi")
-                                        .font(.system(size: 9.5, weight: .semibold))
-                                        .foregroundColor(Color(hex: "#6E737C"))
-                                    Text(message.text)
-                                        .font(.system(size: 12))
-                                        .foregroundColor(Color(hex: "#E8E9EC"))
-                                        .textSelection(.enabled)
+            VStack(alignment: .leading, spacing: 6) {
+                if !chat.messages.isEmpty {
+                    ScrollViewReader { proxy in
+                        ScrollView(.vertical, showsIndicators: false) {
+                            VStack(alignment: .leading, spacing: 6) {
+                                ForEach(chat.messages) { msg in
+                                    ChatBubble(message: msg).id(msg.id)
                                 }
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .id(message.id)
+                                if chat.isAnswering {
+                                    HStack { TypingDotsView(); Spacer(minLength: 32) }
+                                        .id("typing")
+                                }
+                                if let error = chat.error {
+                                    Text(error)
+                                        .font(.system(size: 11.5))
+                                        .foregroundColor(Color(hex: "#F4505E"))
+                                }
                             }
-                            if chat.isAnswering {
-                                TypingDotsView().id("typing")
-                            }
-                            if let error = chat.error {
-                                Text(error)
-                                    .font(.system(size: 11.5))
-                                    .foregroundColor(Color(hex: "#F4505E"))
+                            .padding(.vertical, 2)
+                        }
+                        .onChange(of: chat.messages.count) { _, _ in
+                            if let last = chat.messages.last {
+                                withAnimation { proxy.scrollTo(last.id, anchor: .bottom) }
                             }
                         }
-                    }
-                    .onChange(of: chat.messages.count) { _, _ in
-                        if let last = chat.messages.last {
-                            withAnimation { proxy.scrollTo(last.id, anchor: .bottom) }
+                        .onChange(of: chat.isAnswering) { _, answering in
+                            if answering { withAnimation { proxy.scrollTo("typing", anchor: .bottom) } }
                         }
                     }
-                    .onChange(of: chat.isAnswering) { _, answering in
-                        if answering { withAnimation { proxy.scrollTo("typing", anchor: .bottom) } }
-                    }
+                    .frame(maxHeight: .infinity)
+                } else {
+                    Spacer()
                 }
-                .frame(maxHeight: .infinity)
 
                 HStack(spacing: 8) {
-                    TextField("¿Qué quieres repasar?", text: $text)
+                    TextField(chat.messages.isEmpty ? "Pregúntame sobre tus clases…" : "Continuar…",
+                              text: $text)
                         .textFieldStyle(.plain)
                         .font(.system(size: 13))
                         .focused($focused)
-                        .onSubmit(send)
+                        .onSubmit { send() }
+
                     Button(action: send) {
                         Image(systemName: "arrow.up")
                             .font(.system(size: 11, weight: .semibold))
@@ -540,18 +518,24 @@ struct ClassLibraryChatView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .simultaneousGesture(TapGesture().onEnded { focused = true })
             }
-            .padding(.leading, 86)
+            .padding(.leading, 84)
             .padding(.trailing, 16)
-            .padding(.top, 10)
-            .padding(.bottom, 12)
+            .padding(.top, 12)
+            .padding(.bottom, 14)
         }
+        .padding(.bottom, 10)
         .onAppear { focused = true }
     }
 
     private func send() {
-        let question = text
+        let question = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !question.isEmpty else { return }
         text = ""
-        Task { await chat.ask(question) }
+        focused = false
+        Task {
+            await chat.ask(question)
+            focused = true
+        }
     }
 }
 #endif

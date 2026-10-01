@@ -38,6 +38,26 @@ struct IslandContainer: View {
         return min(300, base + CGFloat(state.chatHistory.count) * perMsg)
     }
 
+    /// Views that grow with their conversation.
+    private func isChatView(_ view: IslandView) -> Bool {
+        #if !APPSTORE
+        return view == .prompt || view == .classChat
+        #else
+        return view == .prompt
+        #endif
+    }
+
+    private func chatHeight(for view: IslandView) -> CGFloat {
+        #if !APPSTORE
+        if view == .classChat {
+            let base: CGFloat = 240
+            let perMsg: CGFloat = 40
+            return min(300, base + CGFloat(ClassLibraryChat.shared.messages.count) * perMsg)
+        }
+        #endif
+        return chatPromptHeight
+    }
+
     /// Pixels the content must be pushed down to clear the concave ear transparent area.
     /// = 0 in expanded mode (no ears), = earRadius in compact/notch mode.
     private var earOffset: CGFloat { max(0, -islandTopRadius) }
@@ -151,7 +171,7 @@ struct IslandContainer: View {
             let tr: CGFloat = 0
             withAnimation(anim) {
                 islandWidth      = w
-                islandHeight     = (newMode == .expanded && state.view == .prompt) ? chatPromptHeight : h
+                islandHeight     = (newMode == .expanded && isChatView(state.view)) ? chatHeight(for: state.view) : h
                 cornerRadius     = cr
                 islandTopRadius  = tr
             }
@@ -168,19 +188,23 @@ struct IslandContainer: View {
                                     nw: state.notchWidth, nh: state.notchHeight)
             withAnimation(openSpring) {
                 islandWidth  = w
-                islandHeight = newView == .prompt ? chatPromptHeight : h
+                islandHeight = isChatView(newView) ? chatHeight(for: newView) : h
             }
         }
         .onChange(of: state.chatHistory.count) { _, _ in
             guard state.mode == .expanded, state.view == .prompt else { return }
             withAnimation(openSpring) { islandHeight = chatPromptHeight }
         }
+        .onReceive(NotificationCenter.default.publisher(for: .classChatGrew)) { _ in
+            guard state.mode == .expanded, state.view == .classChat else { return }
+            withAnimation(openSpring) { islandHeight = chatHeight(for: .classChat) }
+        }
         .onAppear {
             let (w, h) = islandSize(mode: state.mode, view: state.view,
                                     progress: state.uploadProgress,
                                     nw: state.notchWidth, nh: state.notchHeight)
             islandWidth      = w
-            islandHeight     = state.view == .prompt ? chatPromptHeight : h
+            islandHeight     = isChatView(state.view) ? chatHeight(for: state.view) : h
             cornerRadius     = state.mode == .expanded ? IslandConst.expandedCorner : IslandConst.roundedCorner
             islandTopRadius  = 0
         }

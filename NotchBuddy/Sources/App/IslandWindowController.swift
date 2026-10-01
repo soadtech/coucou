@@ -897,6 +897,8 @@ extension Notification.Name {
     static let islandShowClassAsk   = Notification.Name("notchBuddy.islandShowClassAsk")
     static let islandShowClassChat  = Notification.Name("notchBuddy.islandShowClassChat")
     static let islandShowClassHome  = Notification.Name("notchBuddy.islandShowClassHome")
+    /// Posted when the library chat gains a message, so the island can grow.
+    static let classChatGrew        = Notification.Name("notchBuddy.classChatGrew")
 }
 
 // MARK: - islandSize (takes real notch dimensions)
